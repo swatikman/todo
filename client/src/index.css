@@ -1,0 +1,27 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.todo-list {
+  max-width: 500px;
+  margin: 0 auto 0;
+}
+
+.todo-list-title {
+  margin: 0 auto 0;
+  text-align: center;
+}
+
+.todo-list .todo-list-item button {
+  margin: 3px;
+}
