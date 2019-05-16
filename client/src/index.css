@@ -12,11 +12,6 @@ code {
     monospace;
 }
 
-.todo-list {
-  max-width: 500px;
-  margin: 0 auto 0;
-}
-
 .todo-list-title {
   margin: 0 auto 0;
   text-align: center;
@@ -24,4 +19,18 @@ code {
 
 .todo-list .todo-list-item button {
   margin: 3px;
+}
+
+.todo-page-wrapper {
+  max-width: 500px;
+  margin: 0 auto 0;
+}
+
+.filter-group {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.search-todo {
+  margin-bottom: 10px;
 }

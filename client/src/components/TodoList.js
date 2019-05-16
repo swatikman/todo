@@ -1,27 +1,30 @@
-import React, { Component } from 'react';
-import TodoItem from '../TodoItem';
+import React from 'react';
+import TodoItem from './TodoItem';
+import PropTypes from 'prop-types';
 
-export default class TodoList extends Component {
-    
-    constructor(props) {
-        super(props);
-    }
-    
-    render() {
-        return (
-            <ul className="list-group todo-list">
-                {
-                    this.props.todos.map(({ id, label, done}) => {
-                        return (
-                            <li key={id} className="list-group-item todo-list-item">
-                                <TodoItem label={label} done={done} 
-                                        onClickRemove={() => this.props.onClickRemove(id)}
-                                        onClickDone={() => this.props.onClickDone(id)} />
-                            </li>
-                        )
-                    })
-                }
-            </ul>
-        )
-    };
+const TodoList = ({ todos, onClickRemove, onClickDone, onTaskEdit }) => {
+    return (
+        <ul className="list-group todo-list">
+            {
+                todos.map(({ _id, done, label }) => {
+                    return (
+                        <li key={_id} className="list-group-item todo-list-item">
+                            <TodoItem label={label} done={done} 
+                                    onClickRemove={() => onClickRemove(_id)}
+                                    onClickDone={() => onClickDone(_id, done)} 
+                                    onEdit={(newLabel) => onTaskEdit(_id, newLabel)}/>
+                        </li>
+                    )
+                })
+            }
+        </ul>
+    )
 }
+
+TodoList.propTypes = {
+    onClickRemove: PropTypes.func,
+    onClickDone: PropTypes.func,
+    todos: PropTypes.array
+}
+
+export default TodoList;
