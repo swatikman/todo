@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-export default class AddTask extends Component {
+class AddTask extends Component {
     
     constructor(props) {
         super(props);
@@ -46,3 +46,5 @@ export default class AddTask extends Component {
 AddTask.propTypes = {
     onNewTaskSubmit: PropTypes.func
 }
+
+export default AddTask;

@@ -8,9 +8,6 @@ export default class TasksService {
 
     getMyTasks() {
         return axios.get(`${this.BASE_URL}/tasks`, { headers: this.getHeaders() })
-        .then(result => {
-            return result.data;
-        });
     }
     
     addTasks(label) {

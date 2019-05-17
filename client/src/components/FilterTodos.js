@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { handleFilterClick } from '../actions/TodoList';
 
-export default class FilterTodos extends Component {
+class FilterTodos extends Component {
     render() {
         const Button = styled.button`
             border: none;
@@ -32,10 +34,10 @@ export default class FilterTodos extends Component {
         return (
             <ButtonGroup>
                 {buttonLabels.map((label) => {
-                    const isActive = this.props.active === label;
+                    const isActive = this.props.filter === label;
                     return (
                         <Button key={label} active={isActive}
-                            onClick={() => this.props.onFilterClick(label)}>
+                            onClick={() => this.props.handleFilterClick(label)}>
                             {label}
                         </Button>
                     );
@@ -45,6 +47,14 @@ export default class FilterTodos extends Component {
     }   
 }
 
-FilterTodos.propTypes = {
-    onFilterClick: PropTypes.func.isRequired
+const mapStateToProps = ({ todoListReducer: { filter }}) => {
+    return { filter }
 }
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        handleFilterClick: (filter) => dispatch(handleFilterClick(filter))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FilterTodos);

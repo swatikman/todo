@@ -19,8 +19,6 @@ export default class TodoPage extends Component {
         this.onClickRemove = this.onClickRemove.bind(this);
         this.onClickDone = this.onClickDone.bind(this);
         this.onFilterClick = this.onFilterClick.bind(this);
-        this.onSearchChange = this.onSearchChange.bind(this);
-        this.renderTodoList = this.renderTodoList.bind(this);
         this.onNewTask = this.onNewTask.bind(this);
         this.onTaskEdit = this.onTaskEdit.bind(this);
 
@@ -35,9 +33,9 @@ export default class TodoPage extends Component {
 
     reloadList() {
         this.tasksService.getMyTasks()
-            .then(tasks => {
+            .then(({ data }) => {
                 this.setState({
-                    tasks: tasks,
+                    tasks: data,
                     loading: false
                 });
             });
@@ -57,17 +55,6 @@ export default class TodoPage extends Component {
     onClickDone(_id, done) {
         done = !done;
         this.updateTask({ _id, done });
-        // this.tasksService.updateTask({ _id, done })
-        //     .then(({ data }) => {
-        //         this.setState(({ tasks }) => {
-        //             const newTasks = this.replaceElemInArray(tasks, data, 
-        //                 (item) => item._id === data._id);
-        //             return { tasks: newTasks };
-        //         })
-        //     })
-        //     .catch(err => {
-        //         console.log(err);
-        //     });
     }
 
     replaceElemInArray(items, newElement, filterFunc) {
@@ -77,12 +64,6 @@ export default class TodoPage extends Component {
                 newElement,
                 ...items.slice(replaceIndex + 1)
             ];
-    }
-
-    onSearchChange(searchText) {
-        this.setState({
-            searchText: searchText
-        });
     }
 
     onFilterClick(label) {
@@ -127,36 +108,6 @@ export default class TodoPage extends Component {
             })
     }
     
-    renderTodoList() {
-        const { tasks: tasks, searchText, activeFilter, loading } = this.state;
-        
-        if (loading) {
-            return <h1>Loading...</h1>;
-        }
-
-        let visibleItems = tasks;
-        if (searchText) {
-            visibleItems = visibleItems.filter(({ label }) => {
-                return label.toLowerCase().indexOf(searchText.toLowerCase()) !== -1;
-            });
-        }
-        switch (activeFilter) {
-            case 'All':
-                break;
-            case 'Done':
-                visibleItems = visibleItems.filter(({ done }) => done);
-                break;
-            case 'In progress':
-                visibleItems = visibleItems.filter(({ done }) => !done);
-                break;
-        }
-        
-        return <TodoList todos={visibleItems}
-                onClickRemove={this.onClickRemove}
-                onClickDone={this.onClickDone}
-                onTaskEdit={this.onTaskEdit} />
-    }
-
     render() {
         const { activeFilter } = this.state;
         return (
@@ -164,8 +115,11 @@ export default class TodoPage extends Component {
                 <h4 className="todo-list-title">TODO:</h4>
                 <AddTask onNewTaskSubmit={this.onNewTask}/>
                 <FilterTodos onFilterClick={this.onFilterClick} active={activeFilter} />
-                <SearchTodos onSearchChange={this.onSearchChange} />
-                {this.renderTodoList()}
+                <SearchTodos />
+                <TodoList
+                    onClickRemove={this.onClickRemove}
+                    onClickDone={this.onClickDone}
+                    onTaskEdit={this.onTaskEdit} />
             </div>
         )
     }
