@@ -7,14 +7,22 @@ export default class UsersService {
     }
 
     login(email, password) {
-        return axios.post(`${this.BASE_URL}/login`, { email, password });
+        return axios.post(`${this.BASE_URL}/users/login`, { email, password });
     }
 
     register(user) {
-        return axios.post(`${this.BASE_URL}/login`, user);        
+        return axios.post(`${this.BASE_URL}/users/register`, user);        
+    }
+
+    accountVerify(token) {
+        return axios.post(`${this.BASE_URL}/users/register/${token}`);        
     }
 
     passwordReset(email) {
-        return axios.post(`${this.BASE_URL}/password_reset`, { email });        
+        return axios.post(`${this.BASE_URL}/users/password_reset`, { email });        
+    }
+
+    passwordResetNewPassword(resetToken, password) {
+        return axios.post(`${this.BASE_URL}/users/password_reset/${resetToken}`, { password });        
     }
 }

@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Joi = require('joi');
 const _ = require('lodash');
-const url = require('url');
 
 const auth = require('./../middlewares/auth');
 const { User } = require('./../models/user');
@@ -18,8 +17,7 @@ router.post('/login', async (req, res) => {
     const isMatch = await user.comparePasswords(req.body.password);
     if (isMatch) {
         const token = user.generateAuthToken();
-        res.header('token', token);
-        return res.send(pickFieldsFromUser(user));
+        return res.header('token', token).send(pickFieldsFromUser(user));
     } else {
         return res.status(400).send({ error: 'Invalid email or password'});
     }
@@ -28,7 +26,7 @@ router.post('/login', async (req, res) => {
 router.post('/password_reset', async (req, res) => {
     const { error } = validateEmail(req.body);
     if (error) return res.status(400).send({ error: error.details[0].message });
-    
+
     const user = await User.findOne({ email: req.body.email });
     if (!user) return res.status(404).send({ error: 'User with this email is not exist' });
     
@@ -37,7 +35,8 @@ router.post('/password_reset', async (req, res) => {
     } catch(e) {
         return res.status(400).send({ error: 'Could not reset password. Try again later.'})
     }
-    const passwordResetTokenLink = `${getCurrentUrl(req)}/${user.passwordResetToken}`;
+    // const passwordResetTokenLink = `${getCurrentUrl(req)}/${user.passwordResetToken}`;
+    const passwordResetTokenLink = `http://localhost:8080/password_reset/${user.passwordResetToken}`;
 
     await sendEmail(
         req.body.email,
@@ -69,7 +68,8 @@ router.post('/register', async (req, res) => {
 
     const user = await User.register(req.body);
     if (user) {
-        const verifyLink = `${getCurrentUrl(req)}/${user.accountVerifyToken}`;
+        // const verifyLink = `${getCurrentUrl(req)}/${user.accountVerifyToken}`;
+        const verifyLink = `http://localhost:8080/register/${user.accountVerifyToken}`;
         try {
             await sendEmail(
                 req.body.email,
