@@ -9,7 +9,7 @@ export default class LoginForm extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { email: 'abc@gmail.com', password: '123456', error: null };
+        this.state = { email: '', password: '', error: null };
 
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
@@ -44,6 +44,7 @@ export default class LoginForm extends Component {
                 this.setState({
                     error: err.response.data.error
                 })
+                
             });
     }
 

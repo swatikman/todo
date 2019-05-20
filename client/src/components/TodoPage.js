@@ -19,7 +19,6 @@ export default class TodoPage extends Component {
                     <TodoHeader />
                 </Col>
                 <Col span={8} offset={6} xs={24} sm={24} md={24} lg={8} xl={10}>
-                        
                     <h4 className="todo-list-title">Your tasks:</h4>
                     <AddTask />
                     <FilterTasks />

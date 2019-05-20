@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import UsersService from '../services/UsersService';
-import { Input, Form, Button, Col } from 'antd';
+import { Input, Form, Button, Col, Alert } from 'antd';
 
 export default class PasswordReset extends Component {
     
@@ -13,6 +13,10 @@ export default class PasswordReset extends Component {
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.usersService = new UsersService();
+    }
+
+    componentDidMount() {
+        document.title = 'Password reset';
     }
 
     onChange(e) {
@@ -39,7 +43,10 @@ export default class PasswordReset extends Component {
 
     render() {
         const { response, email } = this.state
-        const responseJsx = (response) ? <span>{response}</span> : '';
+        let responseJsx = null;
+        if (response) {
+            responseJsx = <Alert message={response} type="warning" />;
+        } 
         return (
             <Col span={6} offset={9} className="password-reset-form">
                 <Form onSubmit={this.onSubmit} >

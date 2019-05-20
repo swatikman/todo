@@ -35,8 +35,7 @@ router.post('/password_reset', async (req, res) => {
     } catch(e) {
         return res.status(400).send({ error: 'Could not reset password. Try again later.'})
     }
-    // const passwordResetTokenLink = `${getCurrentUrl(req)}/${user.passwordResetToken}`;
-    const passwordResetTokenLink = `http://localhost:8080/password_reset/${user.passwordResetToken}`;
+    const passwordResetTokenLink = `${getCurrentUrl(req)}/password_reset/${user.passwordResetToken}`;
 
     await sendEmail(
         req.body.email,
@@ -68,8 +67,7 @@ router.post('/register', async (req, res) => {
 
     const user = await User.register(req.body);
     if (user) {
-        // const verifyLink = `${getCurrentUrl(req)}/${user.accountVerifyToken}`;
-        const verifyLink = `http://localhost:8080/register/${user.accountVerifyToken}`;
+        const verifyLink = `${getCurrentUrl(req)}/register/${user.accountVerifyToken}`;
         try {
             await sendEmail(
                 req.body.email,

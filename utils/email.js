@@ -35,8 +35,7 @@ module.exports.sendEmail = (to, subject, htmlText) => {
 module.exports.getCurrentUrl = (req) => {
     return url.format({
         protocol: req.protocol,
-        host: req.get('host'),
-        pathname: req.originalUrl
+        host: req.get('host')
     });
 }
 
