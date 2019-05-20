@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Button, List, Input, Icon } from 'antd';
 
 export default class TodoItem extends Component {
     
@@ -19,7 +20,10 @@ export default class TodoItem extends Component {
         if (this.state.editable) {
             this.props.onEdit(this.state.label);
         }
-        this.state.label = this.props.label;
+        this.setState({
+            label: this.props.label
+        });
+
         this.setState(({ editable }) => {
             return {
                 editable: !editable
@@ -36,27 +40,30 @@ export default class TodoItem extends Component {
     render() {
         const { done, onClickDone, onClickRemove } = this.props;
         const { editable } = this.state;
-        const doneText = done ? 'Undone' : 'Done';
         return (
-            <React.Fragment>
+            <List.Item className="todo-list-item" actions={[
+                <Button.Group>
+                    <Button type="primary"
+                            onClick={onClickRemove} disabled={editable}>
+                        Remove
+                    </Button>
+                    <Button type="dashed"
+                            onClick={onClickDone} disabled={editable}>
+                        <Icon type={done ? "stop" : "check" } />
+                    </Button>
+                    <Button type="danger"
+                            onClick={this.onToggleEdit}>
+                        { editable ? 'Ok' : 'Edit' }
+                    </Button>
+                </Button.Group>
+            ]}>
                 {
                     editable
-                    ? <input type="text" value={this.state.label} onChange={this.onLabelChange}/>
+                    ? <Input type="text" value={this.state.label} onChange={this.onLabelChange}/>
                     : <span>{this.props.label}</span>
                 }
-                <button type="button"
-                        onClick={onClickRemove} disabled={editable}>
-                    Remove
-                </button>
-                <button type="button"
-                        onClick={onClickDone} disabled={editable}>
-                    {doneText}
-                </button>
-                <button type="button"
-                        onClick={this.onToggleEdit}>
-                    { editable ? 'Ok' : 'Edit' }
-                </button>
-            </React.Fragment>
+                
+                </List.Item>
         )
     }
 }

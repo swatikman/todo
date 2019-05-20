@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { handleTaskSearch } from './../actions/TodoList';
+import { Input } from 'antd';
 
 const SearchTodos = ({ handleTaskSearch, search }) => {
     return (
-        <input className="search-todo" 
+        <Input.Search className="search-todo" 
                 type="text" placeholder="Search" 
                 onChange={(e) => { handleTaskSearch(e.target.value) }}
                 value={search} />

@@ -13,7 +13,7 @@ code {
 }
 
 .todo-list-title {
-  margin: 0 auto 0;
+  margin: 24px auto 24px;
   text-align: center;
 }
 
@@ -22,7 +22,6 @@ code {
 }
 
 .todo-page-wrapper {
-  max-width: 500px;
   margin: 0 auto 0;
 }
 
@@ -34,3 +33,32 @@ code {
 .search-todo {
   margin-bottom: 10px;
 }
+
+.todo-list-item span {
+  width: 100%;
+}
+
+.add-task {
+  margin-bottom: 16px;
+}
+
+.filter-tasks {
+  margin-bottom: 16px;
+}
+
+.login-form {
+  margin-top: 160px;
+}
+
+.register-form {
+  margin-top: 160px;
+}
+
+.password-reset-form {
+  margin-top: 50px;
+}
+
+.password-reset-form input {
+  margin-bottom: 24px;
+}
+

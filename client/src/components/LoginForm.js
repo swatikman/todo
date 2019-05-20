@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import UsersService from '../services/UsersService';
 import { saveUser, isAuthenticated } from '../services/LocalStorage';
 import { Link } from 'react-router-dom';
+import { Input, Icon, Form, Button, Col, Alert } from 'antd';
 
 export default class LoginForm extends Component {
 
@@ -18,7 +19,9 @@ export default class LoginForm extends Component {
     componentDidMount() {
         if (isAuthenticated()) {
             this.props.history.push('/');
+            return;        
         }
+        document.title = 'Login';
     }
 
     onChange (event) {
@@ -46,22 +49,44 @@ export default class LoginForm extends Component {
 
     render() {
         const { email, password, error } = this.state;
+        let errorJsx = null;
+        if (error) {
+            errorJsx = <Alert message="Error" description={error} type="error" />
+        }
         return (
-            <div>
-                <span>{error}</span>
-                <form onSubmit={this.onSubmit}>
-                    <input type="text" placeholder="Email"
-                            name="email" 
+            <Col span={6} offset={9} className="login-form">
+                {errorJsx}
+                <Form onSubmit={this.onSubmit}>
+                    <Form.Item>
+                        <Input
+                            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                            placeholder="Username" 
+                            name="email"
                             value={email}
                             onChange={this.onChange} />
-                    <input type="password" placeholder="Password"
+                    </Form.Item>
+                    <Form.Item>
+                        <Input
+                            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                            type="password"
                             name="password"
+                            placeholder="Password"
                             value={password}
-                            onChange={this.onChange}  />
-                    <input type="submit" />
-                </form>
-                <Link to='/password_reset' >Forgot password?</Link>
-            </div>
+                            onChange={this.onChange} />
+                    </Form.Item>
+                    <Form.Item>
+                    <Link to="/password_reset">
+                        Forgot password
+                    </Link>
+                    <br />
+                    <Button type="primary" htmlType="submit">
+                        Log in
+                    </Button>
+                    <br/>
+                    Or <Link to="/register">register now!</Link>
+                    </Form.Item>
+                </Form>
+            </Col>
             
         )
     }

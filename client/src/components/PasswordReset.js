@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react';
 import UsersService from '../services/UsersService';
+import { Input, Form, Button, Col } from 'antd';
 
 export default class PasswordReset extends Component {
     
@@ -40,14 +41,18 @@ export default class PasswordReset extends Component {
         const { response, email } = this.state
         const responseJsx = (response) ? <span>{response}</span> : '';
         return (
-            <form onSubmit={this.onSubmit} >
-                {responseJsx}
-                <input type="text" name="email" 
-                        value={email}
-                        placeholder="Email"
-                        onChange={this.onChange} />
-                <input type="submit" value="Submit" />
-            </form>
+            <Col span={6} offset={9} className="password-reset-form">
+                <Form onSubmit={this.onSubmit} >
+                    {responseJsx}
+                    Enter your email to reset password
+                    <Input type="text" name="email" 
+                            value={email}
+                            placeholder="Email"
+                            onChange={this.onChange} />
+                    <Button type="primary" htmlType="submit">Submit</Button>
+                </Form>
+            </Col>
+            
         );
     }
 }

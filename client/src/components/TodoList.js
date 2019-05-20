@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import TodoItem from './TodoItem';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { handleFetchingTasks, handleUpdate } from './../actions/TodoList';
+import { handleFetchingTasks, handleUpdate, handleRemoveTask, handleAddTask } from './../actions/TodoList';
+import { List, Alert, Spin } from 'antd';
 
 class TodoList extends Component {
 
@@ -10,6 +11,7 @@ class TodoList extends Component {
         super(props);
 
         this.onClickDone = this.onClickDone.bind(this);
+        this.onTaskEdit = this.onTaskEdit.bind(this);
     }
 
     componentDidMount() {
@@ -21,11 +23,15 @@ class TodoList extends Component {
         this.props.handleUpdate({ _id, done });
     }
 
+    onTaskEdit(_id, label) {
+        this.props.handleUpdate({ _id, label });
+    }
+
     render () {
-        const { onClickRemove, handleUpdate, onTaskEdit, tasks, filter, search, loading } = this.props;
+        const { handleRemoveTask, tasks, filter, search, loading, minorError } = this.props;
 
         if (loading) {
-            return <h1>Loading...</h1>;
+            return <Spin size="large"  />;
         }
 
         let visibleItems = tasks;
@@ -43,22 +49,27 @@ class TodoList extends Component {
             case 'In progress':
                 visibleItems = visibleItems.filter(({ done }) => !done);
                 break;
+            default:
+                break;
+        }
+        let header = null;
+        if (minorError) {
+            header = (<Alert message={minorError.error} type="error" />)
         }
         return (
-            <ul className="list-group todo-list">
+            <List className="todo-list"
+                    header={header}>
                 {
                     visibleItems.map(({ _id, done, label }) => {
                         return (
-                            <li key={_id} className="list-group-item todo-list-item">
-                                <TodoItem label={label} done={done} 
-                                        onClickRemove={() => onClickRemove(_id)}
-                                        onClickDone={() => this.onClickDone(_id, done)} 
-                                        onEdit={(label) => onTaskEdit(_id, newLabel)}/>
-                            </li>
+                            <TodoItem key={_id} label={label} done={done} 
+                                    onClickRemove={() => handleRemoveTask(_id)}
+                                    onClickDone={() => this.onClickDone(_id, done)} 
+                                    onEdit={(label) => this.onTaskEdit(_id, label)}/>
                         )
                     })
                 }
-            </ul>
+            </List>
         )
     }
 }
@@ -69,10 +80,10 @@ TodoList.propTypes = {
     todos: PropTypes.array
 }
 
-const mapStateToProps = ({ todoListReducer: { tasks, filter, search, loading } }) => {
-    return { tasks, filter, search, loading };
+const mapStateToProps = ({ todoListReducer: { tasks, filter, search, loading, minorError } }) => {
+    return { tasks, filter, search, loading, minorError };
 }
 
-const mapDispatchToProps = { handleFetchingTasks, handleUpdate };
+const mapDispatchToProps = { handleFetchingTasks, handleUpdate, handleRemoveTask, handleAddTask };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoList);

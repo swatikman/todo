@@ -1,48 +1,30 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { handleFilterClick } from '../actions/TodoList';
+import { Radio } from 'antd';
 
-class FilterTodos extends Component {
+class FilterTasks extends Component {
     render() {
-        const Button = styled.button`
-            border: none;
-            color: white;
-            padding: 15px 15px;
-            text-align center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 3px;
-            ${({ active }) => active && `
-                background: blue;
-            `}
-            `;
-
-        const ButtonGroup = styled.div`
-            display: grid;    
-            grid-template-columns: 1fr 1fr 1fr;
-            `;
 
         const buttonLabels = [
             'All',
             'Done',
             'In progress',
         ];
-
         return (
-            <ButtonGroup>
-                {buttonLabels.map((label) => {
-                    const isActive = this.props.filter === label;
-                    return (
-                        <Button key={label} active={isActive}
-                            onClick={() => this.props.handleFilterClick(label)}>
-                            {label}
-                        </Button>
-                    );
-                })}
-            </ButtonGroup>
+            <div className="filter-tasks">
+                <Radio.Group value={this.props.filter} size="large" buttonStyle="solid" >
+                    {buttonLabels.map((label) => {
+                        return (
+                            <Radio.Button key={label}
+                                onClick={() => this.props.handleFilterClick(label)}
+                                value={label} >
+                                {label}
+                            </Radio.Button>
+                        );
+                    })}
+                </Radio.Group>
+            </div>
         )
     }   
 }
@@ -57,4 +39,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FilterTodos);
+export default connect(mapStateToProps, mapDispatchToProps)(FilterTasks);

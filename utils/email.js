@@ -3,6 +3,9 @@ const url = require('url');
 const config = require('./../config');
 
 module.exports.sendEmail = (to, subject, htmlText) => {
+    if (config.email.notSend) {
+        return Promise.resolve();
+    }
     return new Promise((resolve, reject) => {
         let transporter = nodeMailer.createTransport({
             host: 'smtp.gmail.com',
@@ -36,3 +39,5 @@ module.exports.getCurrentUrl = (req) => {
         pathname: req.originalUrl
     });
 }
+
+
