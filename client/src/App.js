@@ -10,6 +10,7 @@ import PrivateRoute from './components/PrivateRoute';
 import AccountVerify from './components/AccountVerify';
 import PasswordReset from './components/PasswordReset';
 import PasswordResetNewPassword from './components/PasswordResetNewPassword';
+import NotFound from './components/NotFound';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
               <Route exact path="/password_reset" component={PasswordReset} />
               <Route exact path="/password_reset/:token" component={PasswordResetNewPassword} />
               <Route exact path="/register/:token" component={AccountVerify} />
+              <Route component={NotFound} />
           </Switch>
       </BrowserRouter>
     </Provider>

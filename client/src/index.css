@@ -62,3 +62,14 @@ code {
   margin-bottom: 24px;
 }
 
+.password-reset-form2 {
+  margin-top: 160px;
+}
+
+.not-found-page {
+  margin-top: 160px;
+  display: flex;
+  justify-content: center;
+}
+
+

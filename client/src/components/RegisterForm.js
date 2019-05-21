@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import UsersService from '../services/UsersService';
 import { isAuthenticated } from './../services/LocalStorage'
-import { Input, Form, Col, Button, Alert, Icon } from 'antd';
+import { Input, Form, Col, Button, Alert, Icon, Typography } from 'antd';
 
 export default class RegisterForm extends Component {
     constructor(props) {
@@ -59,14 +59,22 @@ export default class RegisterForm extends Component {
         const { email, password, firstname, 
                 lastname, success, error } = this.state;
         let response = null;
-        if (success || error) {
-            response = <Alert message={error ? "Error" : "Success"} 
-                        description={error ? error : success } 
-                        type={error ? "error" : "success"} style={{ marginBottom: 16 }}/>
+        if (error) {
+            response = <Alert message="Error" 
+                        description={error} 
+                        type="error" style={{ marginBottom: 16 }}/>
+        } else if (success) {
+            return (
+                <Col span={6} offset={9} className="register-form">
+                    <Alert message="Success" 
+                            description={success} 
+                            type="success" />
+                </Col>
+            )
         }
         return (
             <Col span={6} offset={9} className="register-form">
-
+                <Typography.Title level={2}>Registration</Typography.Title>
                 {response}
                 <Form onSubmit={this.onSubmit}>
                     <Form.Item>
