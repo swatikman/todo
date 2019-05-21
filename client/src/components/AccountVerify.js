@@ -4,28 +4,22 @@ import { withRouter, Link } from 'react-router-dom'
 
 class AccountVerify extends Component {
     
-    constructor(props) {
-        super(props);
+    state = { response: '' };
+    
+    usersService = new UsersService();
 
-        this.state = { response: '' };
-        this.usersService = new UsersService();
-    }
-
-    componentDidMount() {
+    async componentDidMount() {
         const token = this.props.match.params.token;
-        this.usersService.accountVerify(token)
-            .then(({ data }) => {
-                this.renderResponseAndRedirect(data.message);
-            })
-            .catch(err => {
-                this.renderResponseAndRedirect('Token is invalid.');
+        try {
+            const { data } = await this.usersService.accountVerify(token);
+            this.setState({
+                response: data.message
             });
-    }
-
-    renderResponseAndRedirect(message) {
-        this.setState({
-            response: message
-        });
+        } catch (err) {
+            this.setState({
+                response: 'Token is invalid.'
+            });
+        }
     }
 
     render() {

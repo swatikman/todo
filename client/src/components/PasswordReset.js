@@ -4,41 +4,34 @@ import UsersService from '../services/UsersService';
 import { Input, Form, Button, Col, Alert } from 'antd';
 
 export default class PasswordReset extends Component {
+
+    state = { email: '', success: '' };
     
-    constructor(props) {
-        super(props);
-
-        this.state = { email: '', success: '' };
-
-        this.onChange = this.onChange.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
-        this.usersService = new UsersService();
-    }
+    usersService = new UsersService();
 
     componentDidMount() {
         document.title = 'Password reset';
     }
 
-    onChange(e) {
+    onChange = (e) => {
         this.setState({
             email: e.target.value
         });
     }
 
-    onSubmit(e) {
+    onSubmit = async (e) => {
         e.preventDefault();
-        this.usersService.passwordReset(this.state.email)
-            .then(({ data }) => {
-                this.setState({
-                    response: data.message,
-                    email: ''
-                })
+        try {
+            const { data } = await this.usersService.passwordReset(this.state.email);
+            this.setState({
+                response: data.message,
+                email: ''
             })
-            .catch(err => {
-                this.setState({
-                    response: err.response.data.error
-                })
+        } catch (err) {
+            this.setState({
+                response: err.response.data.error
             });
+        }
     }
 
     render() {

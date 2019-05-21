@@ -1,61 +1,43 @@
 import React, { Component } from 'react'
 import UsersService from '../services/UsersService';
-import { saveUser, isAuthenticated } from '../services/LocalStorage';
-import { Link } from 'react-router-dom';
-import { Input, Icon, Form, Button, Col, Alert } from 'antd';
+import { Link, Redirect } from 'react-router-dom';
+import { Input, Icon, Form, Button, Col, Alert, Typography } from 'antd';
+import { connect } from 'react-redux';
+import { handleLogin } from './../actions/User'
 
-export default class LoginForm extends Component {
+class LoginForm extends Component {
 
-    constructor(props) {
-        super(props);
+    state = { email: '', password: '', error: null };
 
-        this.state = { email: '', password: '', error: null };
-
-        this.onChange = this.onChange.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
-        this.usersService = new UsersService(); 
-    }
+    usersService = new UsersService(); 
 
     componentDidMount() {
-        if (isAuthenticated()) {
-            this.props.history.push('/');
-            return;        
-        }
         document.title = 'Login';
     }
 
-    onChange (event) {
+    onChange = (event) => {
         this.setState({ [event.target.name]: event.target.value });
     }
 
-    onSubmit(e) {
+    onSubmit = async (e) => {
         e.preventDefault();
-        this.usersService.login(this.state.email, this.state.password)
-            .then(({ data, headers }) => {
-                
-                saveUser(headers['token'], data);
-                
-                this.setState({
-                    error: null
-                });    
-                this.props.history.push('/');
-            })
-            .catch(err => {
-                this.setState({
-                    error: err.response.data.error
-                })
-                
-            });
+        this.props.handleLogin(this.state.email, this.state.password);
     }
 
     render() {
-        const { email, password, error } = this.state;
+        const { email, password } = this.state;
+        const { token, error } = this.props;
+        if (token) {
+            return <Redirect to='/' />
+        }
+
         let errorJsx = null;
         if (error) {
             errorJsx = <Alert message="Error" description={error} type="error" />
         }
         return (
             <Col span={6} offset={9} className="login-form">
+                <Typography.Title level={3}>Login</Typography.Title>
                 {errorJsx}
                 <Form onSubmit={this.onSubmit}>
                     <Form.Item>
@@ -92,3 +74,9 @@ export default class LoginForm extends Component {
         )
     }
 }   
+
+const mapStateToProps = ({ user: { token, error } }) => ({ token, error });
+
+const mapDispatchToProps = { handleLogin };
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);

@@ -5,7 +5,6 @@ import { Radio } from 'antd';
 
 class FilterTasks extends Component {
     render() {
-
         const buttonLabels = [
             'All',
             'Done',
@@ -29,14 +28,8 @@ class FilterTasks extends Component {
     }   
 }
 
-const mapStateToProps = ({ todoListReducer: { filter }}) => {
-    return { filter }
-}
+const mapStateToProps = ({ todoListReducer: { filter }}) => ({ filter });
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        handleFilterClick: (filter) => dispatch(handleFilterClick(filter))
-    }
-}
+const mapDispatchToProps = { handleFilterClick };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilterTasks);

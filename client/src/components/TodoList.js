@@ -6,28 +6,26 @@ import { handleFetchingTasks, handleUpdate, handleRemoveTask, handleAddTask } fr
 import { List, Alert, Spin } from 'antd';
 
 class TodoList extends Component {
-
-    constructor(props) {
-        super(props);
-
-        this.onClickDone = this.onClickDone.bind(this);
-        this.onTaskEdit = this.onTaskEdit.bind(this);
+    static propTypes = {
+        onClickRemove: PropTypes.func,
+        onClickDone: PropTypes.func,
+        todos: PropTypes.array
     }
 
     componentDidMount() {
         this.props.handleFetchingTasks();
     }
 
-    onClickDone(_id, done) {
+    onClickDone = (_id, done) => {
         done = !done;
         this.props.handleUpdate({ _id, done });
     }
 
-    onTaskEdit(_id, label) {
+    onTaskEdit = (_id, label) => {
         this.props.handleUpdate({ _id, label });
     }
 
-    render () {
+    render() {
         const { handleRemoveTask, tasks, filter, search, loading, minorError } = this.props;
 
         if (loading) {
@@ -74,15 +72,7 @@ class TodoList extends Component {
     }
 }
 
-TodoList.propTypes = {
-    onClickRemove: PropTypes.func,
-    onClickDone: PropTypes.func,
-    todos: PropTypes.array
-}
-
-const mapStateToProps = ({ todoListReducer: { tasks, filter, search, loading, minorError } }) => {
-    return { tasks, filter, search, loading, minorError };
-}
+const mapStateToProps = ({ todoListReducer: { tasks, filter, search, loading, minorError } }) => ({ tasks, filter, search, loading, minorError });
 
 const mapDispatchToProps = { handleFetchingTasks, handleUpdate, handleRemoveTask, handleAddTask };
 

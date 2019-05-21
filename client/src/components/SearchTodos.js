@@ -12,10 +12,8 @@ const SearchTodos = ({ handleTaskSearch, search }) => {
     )   
 }
 
-const mapStateToProps = ({ todoListReducer: { search }}) => {
-    return { search };
-};
+const mapStateToProps = ({ todoListReducer: { search }}) => ({ search });
 
-const mapDispatchToProps = {  handleTaskSearch };
+const mapDispatchToProps = { handleTaskSearch };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchTodos);

@@ -1,68 +1,65 @@
 import React, { Component } from 'react';
 import UsersService from '../services/UsersService';
-import { isAuthenticated } from './../services/LocalStorage'
 import { Input, Form, Col, Button, Alert, Icon, Typography } from 'antd';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-export default class RegisterForm extends Component {
-    constructor(props) {
-        super(props);
+class RegisterForm extends Component {
 
-        this.state = { 
-            email: '', 
-            password: '',
-            firstname: '',
-            lastname: '',
-            success: null,
-            error: null };
+    state = { 
+        email: '', 
+        password: '',
+        firstname: '',
+        lastname: '',
+        success: null,
+        error: null 
+    };
 
-        this.onChange = this.onChange.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
-        this.usersService = new UsersService(); 
-    }
+    usersService = new UsersService();
 
     componentDidMount() {
-        if (isAuthenticated()) {
-            this.props.history.push('/');
-            return;
-        }
         document.title = 'Register';
     }
 
-    onChange (event) {
+    onChange = (event) => {
         this.setState({ [event.target.name]: event.target.value });
     }
 
-    onSubmit(e) {
+    onSubmit = async (e) => {
         e.preventDefault();
         const { email, password, firstname, lastname } = this.state;
         const user = { email, password, firstname, lastname };
-        this.usersService.register(user)
-            .then(({ data }) => {
-                
-                this.setState({
-                    error: null,
-                    success: data.message,
-                    email: '', 
-                    password: '',
-                    firstname: '',
-                    lastname: '',
-                });    
-            })
-            .catch(err => {
-                this.setState({
-                    error: err.response.data.error
-                })
+        try {
+            const { data } = await this.usersService.register(user);
+            this.setState({
+                error: null,
+                success: data.message,
+                email: '', 
+                password: '',
+                firstname: '',
+                lastname: '',
             });
+        }
+        catch (err) {
+            this.setState({
+                error: err.response.data.error
+            })
+        }
     }
 
     render() {
+        const { token } = this.props;
+        if (token) {
+            return <Redirect to='/' />
+        }
+
         const { email, password, firstname, 
                 lastname, success, error } = this.state;
         let response = null;
         if (error) {
             response = <Alert message="Error" 
-                        description={error} 
-                        type="error" style={{ marginBottom: 16 }}/>
+                            description={error} 
+                            type="error" style={{ marginBottom: 16 }}/>
         } else if (success) {
             return (
                 <Col span={6} offset={9} className="register-form">
@@ -74,7 +71,7 @@ export default class RegisterForm extends Component {
         }
         return (
             <Col span={6} offset={9} className="register-form">
-                <Typography.Title level={2}>Registration</Typography.Title>
+                <Typography.Title level={3}>Registration</Typography.Title>
                 {response}
                 <Form onSubmit={this.onSubmit}>
                     <Form.Item>
@@ -112,7 +109,10 @@ export default class RegisterForm extends Component {
                     <Button type="primary" htmlType="submit">Register</Button>
                 </Form>
             </Col>
-            
         )
     }
 }
+
+const mapStateToProps = ({ user: { token } }) => ({ token });
+
+export default connect(mapStateToProps)(RegisterForm);

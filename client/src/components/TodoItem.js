@@ -4,34 +4,32 @@ import { Button, List, Input, Icon } from 'antd';
 
 export default class TodoItem extends Component {
     
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            label: this.props.label,
-            editable: false
-        };
-
-        this.onToggleEdit = this.onToggleEdit.bind(this);
-        this.onLabelChange = this.onLabelChange.bind(this);
+    static propTypes = {
+        label: PropTypes.string.isRequired,
+        done: PropTypes.bool.isRequired,
+        onClickRemove: PropTypes.func.isRequired,
+        onClickDone: PropTypes.func.isRequired,
+        onEdit: PropTypes.func.isRequired
     }
 
-    onToggleEdit() {
+    state = {
+        label: this.props.label,
+        editable: false
+    };
+
+    onToggleEdit = () => {
         if (this.state.editable) {
             this.props.onEdit(this.state.label);
         }
-        this.setState({
-            label: this.props.label
-        });
-
         this.setState(({ editable }) => {
             return {
+                label: this.props.label,
                 editable: !editable
             }
         });
     }
 
-    onLabelChange(e) {
+    onLabelChange = (e) => {
         this.setState({
             label: e.target.value
         });
@@ -62,16 +60,7 @@ export default class TodoItem extends Component {
                     ? <Input type="text" value={this.state.label} onChange={this.onLabelChange}/>
                     : <span>{this.props.label}</span>
                 }
-                
-                </List.Item>
+            </List.Item>
         )
     }
-}
-
-TodoItem.propTypes = {
-    label: PropTypes.string.isRequired,
-    done: PropTypes.bool.isRequired,
-    onClickRemove: PropTypes.func.isRequired,
-    onClickDone: PropTypes.func.isRequired,
-    onEdit: PropTypes.func.isRequired
 }

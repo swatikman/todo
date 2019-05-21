@@ -1,8 +1,8 @@
+import "@babel/polyfill";
 import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import store from './Store';
-import './App.css';
+import { store } from './Store';
 import TodoPage from './components/TodoPage';
 import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';

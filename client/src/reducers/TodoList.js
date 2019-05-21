@@ -13,17 +13,17 @@ import {
  } from '../actions/TodoList';
 import { replaceElemInArray } from '../utils/utils';
 
-const todoListReducer = (state, action) => {
-    if (state === undefined) {
-        return {
-            filter: 'All',
-            search: '',
-            loading: false,
-            error: false,
-            tasks: [],
-            minorError: ''
-        }
-    }
+
+const initialState = {
+    filter: 'All',
+    search: '',
+    loading: false,
+    error: false,
+    tasks: [],
+    minorError: ''
+}
+
+const todoListReducer = (state = initialState, action) => {
     switch (action.type) {
         case FETCHING_TASKS:
             return {

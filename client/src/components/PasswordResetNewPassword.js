@@ -1,34 +1,29 @@
 import React, { Component } from 'react';
 import UsersService from '../services/UsersService';
-import { Form, Input, Button, Alert, Col } from 'antd';
+import { Form, Input, Button, Alert, Col, Typography } from 'antd';
 
 export default class PasswordResetNewPassword extends Component {
     
-    constructor(props) {
-        super(props);
+    state = { 
+        password1: '', 
+        password2: '',
+        success: '',
+        error: ''
+    };
 
-        this.state = { 
-            password1: '', 
-            password2: '',
-            success: '',
-            error: ''
-        };
-        this.onChange = this.onChange.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
-        this.usersService = new UsersService();
-    }
+    usersService = new UsersService();
 
     componentDidMount() {
         document.title = 'Password reset';
     }
 
-    onChange(e) {
+    onChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value 
         });
     }
     
-    onSubmit(e) {
+    onSubmit = async (e) => {
         e.preventDefault();
         const { password1, password2 } = this.state;
         if (password1 !== password2) {
@@ -37,21 +32,19 @@ export default class PasswordResetNewPassword extends Component {
             });
             return;
         }
-
         const token = this.props.match.params.token;
-        this.usersService.passwordResetNewPassword(token, password1)
-                .then((res) => {
-                    this.setState({
-                        success: 'You can now login with new password',
-                        error: ''
-                    });
-                })
-                .catch(err => {
-                    this.setState({
-                        success: '',
-                        error: err.response.data.error
-                    });
-                });
+        try {
+            await this.usersService.passwordResetNewPassword(token, password1);
+            this.setState({
+                success: 'You can now login with new password',
+                error: ''
+            });
+        } catch (err) {
+            this.setState({
+                success: '',
+                error: err.response.data.error
+            });
+        }
     }
 
     render() {
@@ -64,6 +57,9 @@ export default class PasswordResetNewPassword extends Component {
         } else {
             content = (
                 <Form onSubmit={this.onSubmit}>
+                    <Typography.Title level={3} >
+                        Type your new password
+                    </Typography.Title>
                     <Form.Item>
                         <Input type="password" name="password1" 
                             onChange={this.onChange}

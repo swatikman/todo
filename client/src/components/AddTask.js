@@ -6,24 +6,21 @@ import { Button, Input, Row, Col } from 'antd';
 
 class AddTask extends Component {
     
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            taskText: '',
-        };
-
-        this.onTaskTextChange = this.onTaskTextChange.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
+    static propTypes = {
+        handleAddTask: PropTypes.func
     }
 
-    onTaskTextChange(e) {
+    state = {
+        taskText: '',
+    };
+
+    onTaskTextChange = (e) => {
         this.setState({
             taskText: e.target.value
         });
     }
 
-    onSubmit(e) {
+    onSubmit = (e) => {
         e.preventDefault();
         this.props.handleAddTask(this.state.taskText);
         this.setState({
@@ -51,10 +48,6 @@ class AddTask extends Component {
             </form>
         )
     }
-}
-
-AddTask.propTypes = {
-    handleAddTask: PropTypes.func
 }
 
 const mapDispatchToProps = { handleAddTask };

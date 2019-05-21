@@ -59,51 +59,46 @@ export function fetchingUpdateTaskError(error) {
 }
 
 export function handleAddTask(label) {
-    return (dispatch) => {
-        return tasksService.addTask(label)
-            .then(({ data }) => {
-                dispatch(addTask(data));
-            }) 
-            .catch(({ response }) => {
-                dispatch(addTaskError(response.data));
-            })
+    return async (dispatch) => {
+        try {
+            const { data } = await tasksService.addTask(label)
+            dispatch(addTask(data));
+        } catch ({ response }) {
+            dispatch(addTaskError(response.data));
+        }
     }
 }
 
 export function handleUpdate(task) {
-    return (dispatch) => {
-        return tasksService.updateTask(task)
-                .then(({ data }) => {
-                    dispatch(fetchingUpdateTaskSuccess(data));
-                })
-                .catch(({ response }) => {
-                    dispatch(fetchingUpdateTaskError(response.data));
-                });
+    return async (dispatch) => {
+        try {
+            const { data } = await tasksService.updateTask(task);
+            dispatch(fetchingUpdateTaskSuccess(data));
+        } catch ({ response }) {
+            dispatch(fetchingUpdateTaskError(response.data));
+        }
     }
 }
 
 export function handleFetchingTasks() {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch(fetchingTasks())
-        return tasksService.getMyTasks()
-                .then(({ data }) => {
-                    dispatch(fetchingTasksSuccess(data))
-                })
-                .catch(({ response}) => {
-                    dispatch(fetchingTasksError(response.data))
-                });
+        try {
+            const { data } = await tasksService.getMyTasks();
+            dispatch(fetchingTasksSuccess(data))
+        } catch ({ response }) {
+            dispatch(fetchingTasksError(response.data))
+        }
     }  
 }
 
-
 export function handleRemoveTask(_id) {
-    return (dispatch) => {
-        return tasksService.removeTask(_id)
-                .then((res) => {
-                    dispatch(removeTask(_id));
-                })
-                .catch(({ response }) => {
-                    dispatch((removeTaskError(response.data)));
-                });
+    return async (dispatch) => {
+        try {
+            await tasksService.removeTask(_id)
+            dispatch(removeTask(_id));
+        } catch ({ response }) {
+            dispatch((removeTaskError(response.data)));
+        }
     }  
 }
