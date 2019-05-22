@@ -1,5 +1,5 @@
 module.exports = {
-    privateKey: process.env.PRIVATE_KEY,
+    privateKey: process.env.JWT_PRIVATE_KEY,
     email: {
         login: process.env.EMAIL_LOGIN,
         password: process.env.EMAIL_PASSWORD,

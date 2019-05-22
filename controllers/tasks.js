@@ -12,7 +12,7 @@ module.exports = {
         if (!task) {
             return response.status(404).send({ error: 'Task was not found' });
         }
-        if (task.user !== request.userId) {
+        if (task.user.toString() !== request.userId) {
             return response.status(403).send({ error: "You can't see that task" });
         }
         response.send(task);
@@ -37,10 +37,14 @@ module.exports = {
     },
 
     delete: async (request, response) => {
-        const task = await Task.findOne({ _id: request.params.id, user: request.userId });
-
+        const task = await Task.findById(request.params.id);
+    
         if (!task) {
             return response.status(404).send({ error: 'Task was not found' });
+        }
+
+        if (task.user.toString() !== request.userId) {
+            return response.status(403).send({ error: "You can't see that task" });
         }
         await task.remove();
         response.send({ message: 'Task was removed' });
