@@ -59,38 +59,42 @@ const todoListReducer = (state = initialState, action) => {
                 minorError: '',
                 search: action.payload,
             }
-        case UPDATE_TASK_SUCCESS:
-            let newTasks = replaceElemInArray(state.tasks, action.data, 
+        case UPDATE_TASK_SUCCESS: {
+            const newTasks = replaceElemInArray(state.tasks, action.data, 
                 (item) => item._id === action.data._id);
             return {
                 ...state,
                 minorError: '',
                 tasks: newTasks
             }
+        }
         case UPDATE_TASK_ERROR:
             return {
                 ...state,
                 minorError: action.error.response.data.error
             }
-        case REMOVE_TASK_SUCCESS:
-            newTasks = state.tasks.filter((task) => task._id !== action.meta._id );
+        case REMOVE_TASK_SUCCESS: {
+            const newTasks = state.tasks.filter((task) => task._id !== action.meta._id );
             return {
                 ...state,
                 minorError: '',
                 tasks: newTasks
             }
+        }
+            
         case REMOVE_TASK_ERROR:
             return {
                 ...state,
                 minorError: action.error.response.data.error 
             }
-        case ADD_TASK_SUCCESS:
-            newTasks = state.tasks.concat([action.data]);
+        case ADD_TASK_SUCCESS: {
+            const newTasks = state.tasks.concat([action.data]);
             return {
                 ...state,
                 minorError: '',
                 tasks: newTasks
             }
+        }
         case ADD_TASK_ERROR:
             return {
                 ...state,
