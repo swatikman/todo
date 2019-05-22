@@ -6,9 +6,9 @@ import {
     TASK_SEARCH_CHANGE,
     UPDATE_TASK_SUCCESS,
     UPDATE_TASK_ERROR,
-    REMOVE_TASK,
+    REMOVE_TASK_SUCCESS,
     REMOVE_TASK_ERROR,
-    ADD_TASK,
+    ADD_TASK_SUCCESS,
     ADD_TASK_ERROR
  } from '../actions/TodoList';
 import { replaceElemInArray } from '../utils/utils';
@@ -18,7 +18,7 @@ const initialState = {
     filter: 'All',
     search: '',
     loading: false,
-    error: false,
+    error: '',
     tasks: [],
     minorError: ''
 }
@@ -29,23 +29,23 @@ const todoListReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading: true,
-                error: false,
+                error: '',
             }
         case FETCHING_TASKS_ERROR:
             return {
                 ...state,
                 loading: false,
                 minorError: '',
-                error: action.payload,
+                error: action.error.response.data.error,
                 tasks: []
             }
         case FETCHING_TASKS_SUCCESS:
             return {
                 ...state,
                 loading: false,
-                error: false,
+                error: '',
                 minorError: '',
-                tasks: action.payload
+                tasks: action.data
             }
         case SET_TASK_FILTER:
             return {
@@ -60,8 +60,8 @@ const todoListReducer = (state = initialState, action) => {
                 search: action.payload,
             }
         case UPDATE_TASK_SUCCESS:
-            let newTasks = replaceElemInArray(state.tasks, action.payload, 
-                (item) => item._id === action.payload._id);
+            let newTasks = replaceElemInArray(state.tasks, action.data, 
+                (item) => item._id === action.data._id);
             return {
                 ...state,
                 minorError: '',
@@ -70,10 +70,10 @@ const todoListReducer = (state = initialState, action) => {
         case UPDATE_TASK_ERROR:
             return {
                 ...state,
-                minorError: action.payload
+                minorError: action.error.response.data.error
             }
-        case REMOVE_TASK:
-            newTasks = state.tasks.filter((task) => task._id !== action.payload );
+        case REMOVE_TASK_SUCCESS:
+            newTasks = state.tasks.filter((task) => task._id !== action.meta._id );
             return {
                 ...state,
                 minorError: '',
@@ -82,10 +82,10 @@ const todoListReducer = (state = initialState, action) => {
         case REMOVE_TASK_ERROR:
             return {
                 ...state,
-                minorError: action.payload
+                minorError: action.error.response.data.error 
             }
-        case ADD_TASK:
-            newTasks = state.tasks.concat([action.payload]);
+        case ADD_TASK_SUCCESS:
+            newTasks = state.tasks.concat([action.data]);
             return {
                 ...state,
                 minorError: '',
@@ -94,7 +94,7 @@ const todoListReducer = (state = initialState, action) => {
         case ADD_TASK_ERROR:
             return {
                 ...state,
-                minorError: action.payload 
+                minorError: action.error.response.data.error 
             }
         default:
             return state;

@@ -1,88 +1,36 @@
-const express = require('express');
-const router = express.Router();
-const Joi = require('joi');
-const _ = require('lodash');
-
+const router = require('express-promise-router')();
+const yup = require('yup');
 const auth = require('./../middlewares/auth');
-const { Task } = require('./../models/task');
+const controller = require('./../controllers/tasks');
+const { createValidator } = require('./../utils/middleware');
 
-router.get('/', auth, async (req, res) => {
-    let tasks = await Task.find({ user: res.locals.user._id });
-    tasks = tasks.map((task) => {
-        return pickFieldsFromTask(task);
-    })
-    res.send(tasks);
-});
-
-router.get('/:id', auth, async (req, res) => {
-    if (!req.params.id) return res.status(400).send({ error: 'Invalid id' });
-
-    const task = await Task.findOne({ _id: req.params.id, user: res.locals.user._id });
-    if (!task) return res.status(404).send({ error: 'Task was not found' });
-
-    res.send(task);
-});
-
-router.post('/', auth, async (req, res) => {
-    const { error } = validateTask(req.body);
-    if (error) return res.status(400).send({ error: error.details[0].message });   
-    
-    req.body.user = res.locals.user._id;
-    const task = new Task(req.body);
-    try {
-        await task.save();
-        res.send(pickFieldsFromTask(task));
-    } catch (e) {
-        res.send(400).send({ error: 'Task was not saved' });
-    }
-});
-
-router.put('/:id', auth, async (req, res) => {
-    if (!req.params.id) return res.status(400).send({ error: 'Invalid id' });
-
-    const { error } = validateTask(req.body);
-    if (error) return res.status(400).send({ error: error.details[0].message });   
-    
-    // task can't change owner
-    delete req.body.user;
-    try {
-        const task = await Task.findOneAndUpdate({ _id: req.params.id, user: res.locals.user._id }, req.body, { new: true });
-        if (!task) return res.status(404).send({ error: 'Task was not found' });
-        res.send(pickFieldsFromTask(task));
-    } catch (e) {
-        return res.status(400).send({ error: 'Task was not saved' });
-    }
-});
-
-router.delete('/:id', auth, async (req, res) => {
-    if (!req.params.id) return res.status(400).send('Invalid id');   
-    
-    const userId = res.locals.user._id
-    
-    try { 
-        const task = await Task.findOne({ _id: req.params.id, user: userId });
-
-        if (!task) return res.status(404).send({ error: 'Task was not found' });
-        
-        await task.remove();
-        res.send({ message: 'Task was removed' });
-    } catch (e) {
-        res.status(400).send({ error: 'Error occurred. Task was not deleted, try again later' });
-    }
-});
-
-pickFieldsFromTask = (task) => {
-    return _.pick(task, ['_id', 'done', 'label', 'user']);
+let taskSchema = {
+    _id: yup.string().strict(true),
+    label: yup.string().min(1).strict(true),
+    done: yup.boolean(),
+    user: yup.string().length(24).strict(true)
 };
 
-validateTask = (task) => {
-    const schema = {
-        _id: Joi.string().length(24),
-        label: Joi.string().min(1),
-        done: Joi.boolean(),
-        user: Joi.string().length(24)
-    };
-    return Joi.validate(task, schema);
-}
+const taskValidator = createValidator(taskSchema);
+
+router.get('/', auth, (req, res) => 
+    controller.get(req, res)
+);
+
+router.get('/:id', auth, (req, res) => 
+    controller.getOne(req, res)
+);
+
+router.post('/', taskValidator, auth, (req, res) =>
+    controller.post(req, res)
+);
+
+router.put('/:id', taskValidator, auth, (req, res) => 
+    controller.put(req, res)
+);
+
+router.delete('/:id', auth, (req, res) =>
+    controller.delete(req, res)
+);
 
 module.exports = router;

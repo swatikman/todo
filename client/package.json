@@ -34,13 +34,15 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.1",
     "redux": "^4.0.1",
-    "redux-persist": "^5.10.0",
+    "redux-saga": "^1.0.2",
+    "redux-saga-requests": "^0.24.1",
+    "redux-saga-requests-axios": "^0.7.6",
     "redux-thunk": "^2.3.0",
     "styled-components": "^4.2.0",
-    "webpack-dev-server": "^3.3.1"
+    "webpack-dev-server": "^3.2.1"
   },
   "scripts": {
-    "start": "webpack-dev-server",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

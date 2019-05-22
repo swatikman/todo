@@ -3,7 +3,7 @@ const url = require('url');
 const config = require('./../config');
 
 module.exports.sendEmail = (to, subject, htmlText) => {
-    if (config.email.notSend) {
+    if (!config.email.send) {
         return Promise.resolve();
     }
     return new Promise((resolve, reject) => {
@@ -17,7 +17,7 @@ module.exports.sendEmail = (to, subject, htmlText) => {
             }
         });
         let mailOptions = {
-            from: '"Todo List" <chyzh.sviatoslav@gmail.com>',
+            from: `"Todo List" <${config.email.login}\>`,
             to: to,
             subject: subject,
             html: htmlText

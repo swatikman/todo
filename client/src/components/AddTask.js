@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { handleAddTask } from '../actions/TodoList';
+import { fetchAddTask } from '../actions/TodoList';
 import { Button, Input, Row, Col } from 'antd';
 
 class AddTask extends Component {
@@ -22,7 +22,7 @@ class AddTask extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
-        this.props.handleAddTask(this.state.taskText);
+        this.props.fetchAddTask({ label: this.state.taskText });
         this.setState({
             taskText: ''
         });
@@ -50,6 +50,6 @@ class AddTask extends Component {
     }
 }
 
-const mapDispatchToProps = { handleAddTask };
+const mapDispatchToProps = { fetchAddTask };
 
 export default connect(null, mapDispatchToProps)(AddTask);

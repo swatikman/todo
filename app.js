@@ -1,15 +1,14 @@
+require('dotenv').config();
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
-const cors = require('cors')
+const cors = require('cors');
+const config = require('./config');
 
-const usersRouter = require('./routes/users');
-const tasksRouter = require('./routes/tasks');
-
-mongoose.connect('mongodb://localhost/todo', { useNewUrlParser: true, useFindAndModify: false })
+mongoose.connect(config.dbHost, { useNewUrlParser: true, useFindAndModify: false })
     .then(() => console.log('Connected to Database...'))
     .catch(() => {
         console.log("Can't connect to Database. Exiting.")
@@ -26,12 +25,13 @@ app.use(express.static(path.join(__dirname, 'client/dist')));
 app.use(cors({ credentials: true, origin: true,  exposedHeaders: 'token' }))
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api/users', usersRouter);
-app.use('/api/tasks', tasksRouter);
+app.use('/api/users', require('./routes/users'));
+app.use('/api/tasks', require('./routes/tasks'));
+
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname + '/client/dist/index.html'));

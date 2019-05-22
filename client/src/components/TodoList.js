@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import TodoItem from './TodoItem';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { handleFetchingTasks, handleUpdate, handleRemoveTask, handleAddTask } from './../actions/TodoList';
+import { fetchTasks, fetchUpdateTask, fetchRemoveTask } from './../actions/TodoList';
 import { List, Alert, Spin } from 'antd';
 
 class TodoList extends Component {
@@ -13,20 +13,26 @@ class TodoList extends Component {
     }
 
     componentDidMount() {
-        this.props.handleFetchingTasks();
+        this.props.fetchTasks();
     }
 
     onClickDone = (_id, done) => {
         done = !done;
-        this.props.handleUpdate({ _id, done });
+        this.props.fetchUpdateTask({ _id, done });
     }
 
     onTaskEdit = (_id, label) => {
-        this.props.handleUpdate({ _id, label });
+        this.props.fetchUpdateTask({ _id, label });
     }
 
     render() {
-        const { handleRemoveTask, tasks, filter, search, loading, minorError } = this.props;
+        const { tasks, filter, search, loading, 
+                error, minorError, fetchRemoveTask } = this.props;
+
+        if (error) {
+            return (<Alert message="Error" description="Can't load TODO list" 
+                    type="error" style={{ marginTop: 16 }} />)
+        }
 
         if (loading) {
             return <Spin size="large"  />;
@@ -52,7 +58,7 @@ class TodoList extends Component {
         }
         let header = null;
         if (minorError) {
-            header = (<Alert message={minorError.error} type="error" />)
+            header = (<Alert message={minorError} type="error" />)
         }
         return (
             <List className="todo-list"
@@ -61,7 +67,7 @@ class TodoList extends Component {
                     visibleItems.map(({ _id, done, label }) => {
                         return (
                             <TodoItem key={_id} label={label} done={done} 
-                                    onClickRemove={() => handleRemoveTask(_id)}
+                                    onClickRemove={() => fetchRemoveTask(_id)}
                                     onClickDone={() => this.onClickDone(_id, done)} 
                                     onEdit={(label) => this.onTaskEdit(_id, label)}/>
                         )
@@ -72,8 +78,9 @@ class TodoList extends Component {
     }
 }
 
-const mapStateToProps = ({ todoListReducer: { tasks, filter, search, loading, minorError } }) => ({ tasks, filter, search, loading, minorError });
+const mapStateToProps = ({ todoListReducer: { tasks, filter, search, error, loading, minorError } }) => (
+    { tasks, filter, search, error, loading, minorError });
 
-const mapDispatchToProps = { handleFetchingTasks, handleUpdate, handleRemoveTask, handleAddTask };
+const mapDispatchToProps = { fetchTasks, fetchUpdateTask, fetchRemoveTask };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoList);

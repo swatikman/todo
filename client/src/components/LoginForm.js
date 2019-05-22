@@ -3,7 +3,7 @@ import UsersService from '../services/UsersService';
 import { Link, Redirect } from 'react-router-dom';
 import { Input, Icon, Form, Button, Col, Alert, Typography } from 'antd';
 import { connect } from 'react-redux';
-import { handleLogin } from './../actions/User'
+import { handleLogin } from './../actions/User';
 
 class LoginForm extends Component {
 
@@ -21,12 +21,18 @@ class LoginForm extends Component {
 
     onSubmit = async (e) => {
         e.preventDefault();
-        this.props.handleLogin(this.state.email, this.state.password);
+        try {
+            await this.props.handleLogin(this.state.email, this.state.password);
+        } catch (err) {
+            this.setState({
+                error: err.error.response.data.error
+            });
+        }
     }
 
     render() {
-        const { email, password } = this.state;
-        const { token, error } = this.props;
+        const { email, password, error } = this.state;
+        const { token } = this.props;
         if (token) {
             return <Redirect to='/' />
         }

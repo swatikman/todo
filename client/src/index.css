@@ -17,10 +17,6 @@ code {
   text-align: center;
 }
 
-.todo-list .todo-list-item button {
-  margin: 3px;
-}
-
 .todo-page-wrapper {
   margin: 0 auto 0;
 }

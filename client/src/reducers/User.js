@@ -5,29 +5,24 @@ import {
  } from '../actions/User';
 
 const initialState = {
-    token: '',
-    firstname: '',
-    lastname: '',
-    email: '',
-    error: ''
+    token: localStorage.getItem("token"),
+    firstname: localStorage.getItem("firstname"),
+    lastname: localStorage.getItem("lastname"),
+    email: localStorage.getItem("email"),
 };
 
 const user = (state = initialState, action) => {
     switch (action.type) {
         case LOGIN_SUCCESS:
-            const user = action.payload.user;
+            const user = action.response.data;
             return {
-                error: '',
                 firstname: user.firstname,
                 lastname: user.lastname,
                 email: user.email,
-                token: action.payload.token
+                token: action.response.headers.token
             };
         case LOGIN_ERROR: {
-            return {
-                ...state,
-                error: action.payload
-            }
+            return state;
         }
         case LOGOUT:
             return {

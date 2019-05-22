@@ -1,8 +1,7 @@
-import "@babel/polyfill";
 import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { store } from './Store';
+import store from './Store';
 import TodoPage from './components/TodoPage';
 import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
@@ -11,6 +10,7 @@ import AccountVerify from './components/AccountVerify';
 import PasswordReset from './components/PasswordReset';
 import PasswordResetNewPassword from './components/PasswordResetNewPassword';
 import NotFound from './components/NotFound';
+import 'antd/dist/antd.css';
 
 function App() {
   return (

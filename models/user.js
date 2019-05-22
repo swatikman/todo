@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const config = require('./../config');
 const jwt = require('jsonwebtoken');
+const _ = require('lodash');
 const { hashPassword, 
     comparePasswords,
     generatePasswordResetToken,
@@ -91,6 +92,8 @@ userSchema.methods.generateAuthToken = function() {
     const token = jwt.sign({ _id: this._id }, config.privateKey);
     return token;
 };
+
+
 
 const User = mongoose.model('User', userSchema);
 

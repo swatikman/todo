@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getToken } from './LocalStorage';
 
 export default class TasksService {
     
@@ -29,11 +30,8 @@ export default class TasksService {
     
     getHeaders() {
         return {
-            "token": this.getToken()
+            "token": getToken()
         }
     }
 
-    getToken() {
-        return JSON.parse(JSON.parse(localStorage.getItem('persist:root')).user).token;
-    }
 }

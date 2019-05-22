@@ -1,4 +1,5 @@
 import TasksService from '../services/TasksService';
+import { LOGOUT } from './User';
 
 const tasksService = new TasksService();
 
@@ -8,39 +9,71 @@ export const FETCHING_TASKS_ERROR = 'FETCHING_TASKS_ERROR';
 export const SET_TASK_FILTER = 'SET_TASK_FILTER';
 export const TASK_SEARCH_CHANGE = 'TASK_SEARCH_CHANGE';
 export const ADD_TASK = 'ADD_TASK';
+export const ADD_TASK_SUCCESS = 'ADD_TASK_SUCCESS';
 export const ADD_TASK_ERROR = 'ADD_TASK_ERROR';
 export const REMOVE_TASK = 'REMOVE_TASK';
+export const REMOVE_TASK_SUCCESS = 'REMOVE_TASK_SUCCESS';
 export const REMOVE_TASK_ERROR = 'REMOVE_TASK_ERROR';
+export const UPDATE_TASK = 'UPDATE_TASK';
 export const UPDATE_TASK_SUCCESS = 'UPDATE_TASK_SUCCESS';
 export const UPDATE_TASK_ERROR = 'UPDATE_TASK_ERROR';
 
-function addTask(task) {
-    return { type: ADD_TASK, payload: task }
-}
 
-function addTaskError(error) {
-    return { type: ADD_TASK_ERROR, payload: error }
-}
+export const fetchTasks = () => ({
+    type: FETCHING_TASKS,
+    request: {
+        url: '/tasks',
+        headers: tasksService.getHeaders()
+    },
+    meta: {
+      abortOn: LOGOUT
+    },
+});
 
-function removeTask(task) {
-    return { type: REMOVE_TASK, payload: task }
-}
+export const fetchUpdateTask = (task) => ({
+    type: UPDATE_TASK,
+    request: {
+        method: 'PUT',
+        url: `/tasks/${task._id}`,
+        data: task,
+        headers: { 
+            ...tasksService.getHeaders() 
+        }
+    },
+    meta: {
+        abortOn: LOGOUT
+    }
+});
 
-function removeTaskError(error) {
-    return { type: REMOVE_TASK_ERROR, payload: error }
-}
+export const fetchAddTask = (task) => ({
+    type: ADD_TASK,
+    request: {
+        method: 'POST',
+        url: '/tasks',
+        data: task,
+        headers: { 
+            ...tasksService.getHeaders() 
+        }
+    },
+    meta: {
+        abortOn: LOGOUT
+    }
+});
 
-function fetchingTasks() {
-    return { type: FETCHING_TASKS }
-}
-
-function fetchingTasksSuccess(tasks) {
-    return { type: FETCHING_TASKS_SUCCESS, payload: tasks }
-}
-
-function fetchingTasksError(error) {
-    return { type: FETCHING_TASKS_ERROR, payload: error }
-}
+export const fetchRemoveTask = (_id) => ({
+    type: REMOVE_TASK,
+    request: {
+        method: 'DELETE',
+        url: `/tasks/${_id}`,
+        headers: { 
+            ...tasksService.getHeaders() 
+        },
+    },
+    meta: {
+        abortOn: LOGOUT,
+        _id
+    }
+});
 
 export function handleFilterClick(filter) {
     return { type: SET_TASK_FILTER, payload: filter }
@@ -56,49 +89,4 @@ export function fetchingUpdateTaskSuccess(task) {
 
 export function fetchingUpdateTaskError(error) {
     return { type: UPDATE_TASK_ERROR, payload: error }
-}
-
-export function handleAddTask(label) {
-    return async (dispatch) => {
-        try {
-            const { data } = await tasksService.addTask(label)
-            dispatch(addTask(data));
-        } catch ({ response }) {
-            dispatch(addTaskError(response.data));
-        }
-    }
-}
-
-export function handleUpdate(task) {
-    return async (dispatch) => {
-        try {
-            const { data } = await tasksService.updateTask(task);
-            dispatch(fetchingUpdateTaskSuccess(data));
-        } catch ({ response }) {
-            dispatch(fetchingUpdateTaskError(response.data));
-        }
-    }
-}
-
-export function handleFetchingTasks() {
-    return async (dispatch) => {
-        dispatch(fetchingTasks())
-        try {
-            const { data } = await tasksService.getMyTasks();
-            dispatch(fetchingTasksSuccess(data))
-        } catch ({ response }) {
-            dispatch(fetchingTasksError(response.data))
-        }
-    }  
-}
-
-export function handleRemoveTask(_id) {
-    return async (dispatch) => {
-        try {
-            await tasksService.removeTask(_id)
-            dispatch(removeTask(_id));
-        } catch ({ response }) {
-            dispatch((removeTaskError(response.data)));
-        }
-    }  
 }
