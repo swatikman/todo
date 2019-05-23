@@ -1,10 +1,10 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import store from './Store';
+import store from './store';
 import TodoPage from './components/TodoPage';
-import LoginForm from './components/LoginForm';
-import RegisterForm from './components/RegisterForm';
+import SignInForm from './components/SignInForm';
+import SignUpForm from './components/SignUpForm';
 import PrivateRoute from './components/PrivateRoute';
 import AccountVerify from './components/AccountVerify';
 import PasswordReset from './components/PasswordReset';
@@ -18,11 +18,11 @@ function App() {
       <BrowserRouter>
           <Switch>
               <PrivateRoute exact path="/" component={TodoPage} />
-              <Route exact path="/login" component={LoginForm} />
-              <Route exact path="/register" component={RegisterForm} />
-              <Route exact path="/password_reset" component={PasswordReset} />
-              <Route exact path="/password_reset/:token" component={PasswordResetNewPassword} />
-              <Route exact path="/register/:token" component={AccountVerify} />
+              <Route exact path="/sign-in" component={SignInForm} />
+              <Route exact path="/sign-up" component={SignUpForm} />
+              <Route exact path="/password-reset" component={PasswordReset} />
+              <Route exact path="/password-reset/:token" component={PasswordResetNewPassword} />
+              <Route exact path="/account-verify/:token" component={AccountVerify} />
               <Route component={NotFound} />
           </Switch>
       </BrowserRouter>

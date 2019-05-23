@@ -1,8 +1,7 @@
-const nodeMailer = require('nodemailer');
-const url = require('url');
-const config = require('./../config');
+import nodeMailer from 'nodemailer';
+import config from '../config';
 
-module.exports.sendEmail = (to, subject, htmlText) => {
+export const sendEmail = (to, subject, htmlText) => {
     if (!config.email.send) {
         return Promise.resolve();
     }
@@ -31,12 +30,3 @@ module.exports.sendEmail = (to, subject, htmlText) => {
         });
     });
 }
-
-module.exports.getCurrentUrl = (req) => {
-    return url.format({
-        protocol: req.protocol,
-        host: req.get('host')
-    });
-}
-
-

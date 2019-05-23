@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import UsersService from '../services/UsersService';
+import { passwordResetNewPassword } from '../services/UsersService';
 import { Form, Input, Button, Alert, Col, Typography } from 'antd';
 
 export default class PasswordResetNewPassword extends Component {
@@ -10,8 +10,6 @@ export default class PasswordResetNewPassword extends Component {
         success: '',
         error: ''
     };
-
-    usersService = new UsersService();
 
     componentDidMount() {
         document.title = 'Password reset';
@@ -34,7 +32,7 @@ export default class PasswordResetNewPassword extends Component {
         }
         const token = this.props.match.params.token;
         try {
-            await this.usersService.passwordResetNewPassword(token, password1);
+            await passwordResetNewPassword(token, password1);
             this.setState({
                 success: 'You can now login with new password',
                 error: ''

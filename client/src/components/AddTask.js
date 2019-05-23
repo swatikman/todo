@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchAddTask } from '../actions/TodoList';
+import { fetchAddTask } from '../actions/todo-list';
 import { Button, Input, Row, Col } from 'antd';
 
 class AddTask extends Component {
     
     static propTypes = {
-        handleAddTask: PropTypes.func
+        fetchAddTask: PropTypes.func
     }
 
     state = {
@@ -22,7 +22,7 @@ class AddTask extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
-        this.props.fetchAddTask({ label: this.state.taskText });
+        this.props.fetchAddTask({ title: this.state.taskText });
         this.setState({
             taskText: ''
         });
@@ -36,7 +36,7 @@ class AddTask extends Component {
                         <Input type="text" 
                             onChange={this.onTaskTextChange}
                             value={this.state.taskText}
-                            placeholder="Task label"
+                            placeholder="Task title"
                             addon={<Button />}
                             />
                     </Col>

@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { handleTaskSearch } from './../actions/TodoList';
+import { handleTaskSearch } from '../actions/todo-list';
 import { Input } from 'antd';
+import { PropTypes } from 'prop-types';
 
 const SearchTodos = ({ handleTaskSearch, search }) => {
     return (
@@ -10,6 +11,11 @@ const SearchTodos = ({ handleTaskSearch, search }) => {
                 onChange={(e) => { handleTaskSearch(e.target.value) }}
                 value={search} />
     )   
+}
+
+SearchTodos.propTypes = {
+    handleTaskSearch: PropTypes.func,
+    search: PropTypes.string
 }
 
 const mapStateToProps = ({ todoListReducer: { search }}) => ({ search });

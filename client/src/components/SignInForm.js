@@ -1,18 +1,21 @@
 import React, { Component } from 'react'
-import UsersService from '../services/UsersService';
 import { Link, Redirect } from 'react-router-dom';
 import { Input, Icon, Form, Button, Col, Alert, Typography } from 'antd';
 import { connect } from 'react-redux';
-import { handleLogin } from './../actions/User';
+import { handleSignIn } from '../actions/user';
+import { PropTypes } from 'prop-types';
 
-class LoginForm extends Component {
-
+class SignInForm extends Component {
+    
+    static propTypes = {
+        handleSignIn: PropTypes.func,
+        token: PropTypes.string
+    }
+    
     state = { email: '', password: '', error: null };
 
-    usersService = new UsersService(); 
-
     componentDidMount() {
-        document.title = 'Login';
+        document.title = 'Sign in';
     }
 
     onChange = (event) => {
@@ -22,7 +25,7 @@ class LoginForm extends Component {
     onSubmit = async (e) => {
         e.preventDefault();
         try {
-            await this.props.handleLogin(this.state.email, this.state.password);
+            await this.props.handleSignIn(this.state.email, this.state.password);
         } catch (err) {
             this.setState({
                 error: err.error.response.data.error
@@ -42,8 +45,8 @@ class LoginForm extends Component {
             errorJsx = <Alert message="Error" description={error} type="error" />
         }
         return (
-            <Col span={6} offset={9} className="login-form">
-                <Typography.Title level={3}>Login</Typography.Title>
+            <Col span={6} offset={9} className="sign-in-form">
+                <Typography.Title level={3}>Sign in</Typography.Title>
                 {errorJsx}
                 <Form onSubmit={this.onSubmit}>
                     <Form.Item>
@@ -64,15 +67,15 @@ class LoginForm extends Component {
                             onChange={this.onChange} />
                     </Form.Item>
                     <Form.Item>
-                    <Link to="/password_reset">
+                    <Link to="/password-reset">
                         Forgot password
                     </Link>
                     <br />
                     <Button type="primary" htmlType="submit">
-                        Log in
+                        Sign in
                     </Button>
                     <br/>
-                    Or <Link to="/register">register now!</Link>
+                    Or <Link to="/sign-up">Sign up now!</Link>
                     </Form.Item>
                 </Form>
             </Col>
@@ -83,6 +86,6 @@ class LoginForm extends Component {
 
 const mapStateToProps = ({ user: { token, error } }) => ({ token, error });
 
-const mapDispatchToProps = { handleLogin };
+const mapDispatchToProps = { handleSignIn };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
+export default connect(mapStateToProps, mapDispatchToProps)(SignInForm);

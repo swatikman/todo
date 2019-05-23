@@ -5,7 +5,7 @@ import { Button, List, Input, Icon } from 'antd';
 export default class TodoItem extends Component {
     
     static propTypes = {
-        label: PropTypes.string.isRequired,
+        title: PropTypes.string.isRequired,
         done: PropTypes.bool.isRequired,
         onClickRemove: PropTypes.func.isRequired,
         onClickDone: PropTypes.func.isRequired,
@@ -13,17 +13,17 @@ export default class TodoItem extends Component {
     }
 
     state = {
-        label: this.props.label,
+        title: this.props.title,
         editable: false
     };
 
     onToggleEdit = () => {
         if (this.state.editable) {
-            this.props.onEdit(this.state.label);
+            this.props.onEdit(this.state.title);
         }
         this.setState(({ editable }) => {
             return {
-                label: this.props.label,
+                title: this.props.title,
                 editable: !editable
             }
         });
@@ -31,7 +31,7 @@ export default class TodoItem extends Component {
 
     onLabelChange = (e) => {
         this.setState({
-            label: e.target.value
+            title: e.target.value
         });
     }
     
@@ -57,8 +57,8 @@ export default class TodoItem extends Component {
             ]}>
                 {
                     editable
-                    ? <Input type="text" value={this.state.label} onChange={this.onLabelChange}/>
-                    : <span>{this.props.label}</span>
+                    ? <Input type="text" value={this.state.title} onChange={this.onLabelChange}/>
+                    : <span>{this.props.title}</span>
                 }
             </List.Item>
         )

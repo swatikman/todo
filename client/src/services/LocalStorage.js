@@ -1,8 +1,5 @@
-export const saveUser = (token, user) => {
+export const saveToken = (token) => {
     localStorage.setItem('token', token);
-    localStorage.setItem('email', user.email);
-    localStorage.setItem('firstname', user.firstname);
-    localStorage.setItem('lastname', user.lastname);
 }
 
 export const getToken = () => {
@@ -11,8 +8,4 @@ export const getToken = () => {
 
 export const clearStorage = () => {
     localStorage.clear();
-}
-
-export const isAuthenticated = () => {
-    return !!getToken()
 }

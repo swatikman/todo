@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import TodoItem from './TodoItem';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchTasks, fetchUpdateTask, fetchRemoveTask } from './../actions/TodoList';
+import { fetchTasks, fetchUpdateTask, fetchRemoveTask } from '../actions/todo-list';
 import { List, Alert, Spin } from 'antd';
 
 class TodoList extends Component {
     static propTypes = {
-        onClickRemove: PropTypes.func,
-        onClickDone: PropTypes.func,
-        todos: PropTypes.array
+        fetchTasks: PropTypes.func,
+        fetchUpdateTask: PropTypes.func,
+        fetchRemoveTask: PropTypes.func
     }
 
     componentDidMount() {
@@ -21,13 +21,13 @@ class TodoList extends Component {
         this.props.fetchUpdateTask({ _id, done });
     }
 
-    onTaskEdit = (_id, label) => {
-        this.props.fetchUpdateTask({ _id, label });
+    onTaskEdit = (_id, title) => {
+        this.props.fetchUpdateTask({ _id, title });
     }
 
     render() {
-        const { tasks, filter, search, loading, 
-                error, minorError, fetchRemoveTask } = this.props;
+        const { tasks, filter, search, loading, error, minorError,
+                fetchRemoveTask, fetchUpdateTask } = this.props;
 
         if (error) {
             return (<Alert message="Error" description="Can't load TODO list" 
@@ -40,8 +40,8 @@ class TodoList extends Component {
 
         let visibleItems = tasks;
         if (search) {
-            visibleItems = visibleItems.filter(({ label }) => {
-                return label.toLowerCase().indexOf(search.toLowerCase()) !== -1;
+            visibleItems = visibleItems.filter(({ title }) => {
+                return title.toLowerCase().indexOf(search.toLowerCase()) !== -1;
             });
         }
         switch (filter) {
@@ -64,12 +64,12 @@ class TodoList extends Component {
             <List className="todo-list"
                     header={header}>
                 {
-                    visibleItems.map(({ _id, done, label }) => {
+                    visibleItems.map(({ _id, done, title }) => {
                         return (
-                            <TodoItem key={_id} label={label} done={done} 
+                            <TodoItem key={_id} title={title} done={done} 
                                     onClickRemove={() => fetchRemoveTask(_id)}
                                     onClickDone={() => this.onClickDone(_id, done)} 
-                                    onEdit={(label) => this.onTaskEdit(_id, label)}/>
+                                    onEdit={(title) => fetchUpdateTask({ _id, title })}/>
                         )
                     })
                 }

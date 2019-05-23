@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
-import UsersService from '../services/UsersService';
+import { accountVerify } from '../services/UsersService';
 import { withRouter, Link } from 'react-router-dom'
 
 class AccountVerify extends Component {
     
     state = { response: '' };
     
-    usersService = new UsersService();
-
     async componentDidMount() {
         const token = this.props.match.params.token;
         try {
-            const { data } = await this.usersService.accountVerify(token);
+            const { data } = await accountVerify(token);
             this.setState({
                 response: data.message
             });
@@ -29,7 +27,7 @@ class AccountVerify extends Component {
         return (
             <div>
                 <h3>{this.state.response}</h3>
-                <Link to='/login'>To login page</Link>
+                <Link to='/sign-in'>To sign in page</Link>
             </div>
         )
     }

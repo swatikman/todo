@@ -1,6 +1,3 @@
-
-
-
 export function replaceElemInArray(items, newElement, filterFunc) {
     const replaceIndex = items.findIndex(filterFunc);
     return [

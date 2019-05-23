@@ -1,14 +1,11 @@
-
 import React, { Component } from 'react';
-import UsersService from '../services/UsersService';
+import { passwordReset } from '../services/UsersService';
 import { Input, Form, Button, Col, Alert } from 'antd';
 
 export default class PasswordReset extends Component {
 
-    state = { email: '', success: '' };
+    state = { email: '', success: '', error: '' };
     
-    usersService = new UsersService();
-
     componentDidMount() {
         document.title = 'Password reset';
     }
@@ -22,28 +19,27 @@ export default class PasswordReset extends Component {
     onSubmit = async (e) => {
         e.preventDefault();
         try {
-            const { data } = await this.usersService.passwordReset(this.state.email);
+            const { data } = await passwordReset(this.state.email);
             this.setState({
-                response: data.message,
+                success: data.message,
                 email: ''
             })
         } catch (err) {
             this.setState({
-                response: err.response.data.error
+                error: err.response.data.error
             });
         }
     }
 
     render() {
-        const { response, email } = this.state
-        let responseJsx = null;
-        if (response) {
-            responseJsx = <Alert message={response} type="warning" />;
-        } 
-        return (
-            <Col span={6} offset={9} className="password-reset-form">
+        const { success, error, email } = this.state
+        let content = null;
+        if (success) {
+            content = <Alert message="Success" description={success} type="success" />;
+        } else {
+            content = (
                 <Form onSubmit={this.onSubmit} >
-                    {responseJsx}
+                    { error ? <Alert message={error} type="error" /> : ''}
                     Enter your email to reset password
                     <Input type="text" name="email" 
                             value={email}
@@ -51,8 +47,12 @@ export default class PasswordReset extends Component {
                             onChange={this.onChange} />
                     <Button type="primary" htmlType="submit">Submit</Button>
                 </Form>
+            )
+        }
+        return (
+            <Col span={6} offset={9} className="password-reset-form">
+                {content}
             </Col>
-            
         );
     }
 }

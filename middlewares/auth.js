@@ -1,7 +1,7 @@
-const jwt = require('jsonwebtoken');
-const config = require('./../config');
+import jwt from 'jsonwebtoken';
+import config from '../config';
 
-module.exports = function auth (req, res, next) {
+const auth = function auth (req, res, next) {
     const token = req.header('token');
     if (!token) return res.status(401)
             .send({ error: 'Access denied! No token provided.' });
@@ -12,3 +12,5 @@ module.exports = function auth (req, res, next) {
         res.status(400).send({ error: 'Invalid token.' });
     }
 };
+
+export default auth;

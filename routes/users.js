@@ -1,36 +1,28 @@
-const router = require('express-promise-router')();
-const auth = require('./../middlewares/auth');
-const controller = require('./../controllers/users');
-const { registerValidator, 
-    emailValidator, 
-    passwordValidator } = require('./../middlewares/userValidators');
+import promiseRouter from 'express-promise-router';
+import auth from './../middlewares/auth';
+import * as userController from './../controllers/users';
+import { createValidator } from '../utils/middleware';
+import { registerSchema, 
+    emailSchema, 
+    passwordSchema } from '../validator-schemas/user-schemas';
+const router = promiseRouter();
 
-router.post('/login', emailValidator, passwordValidator, (req, res) => {
-    controller.login(req, res);
-});
+const emailValidator = createValidator(emailSchema);
+const registerValidator = createValidator(registerSchema);
+const passwordValidator = createValidator(passwordSchema);
 
-router.post('/register', registerValidator, (req, res) => {
-    controller.register(req, res);  
-});
+router.post('/sign-in', [ emailValidator, passwordValidator ], userController.signIn);
 
-router.post('/register/:token', (req, res) => {
-    controller.registerVerfiy(req, res); 
-});
+router.post('/sign-up', [ registerValidator ], userController.signUp);
 
-router.post('/password_reset', emailValidator, (req, res) => {
-    controller.passwordReset(req, res);
-});
+router.post('/verify/:token', userController.registerVerify);
 
-router.post('/password_reset/:token', passwordValidator, (req, res) => {
-    controller.passwordResetNewPassword(req, res);
-});
+router.post('/password-reset', [ emailValidator ], userController.passwordReset);
 
-router.get('/', auth, (req, res) => {
-    controller.getMe(req, res);
-});
+router.post('/password-reset/:token', [ passwordValidator ], userController.passwordResetNewPassword);
 
-router.put('/', auth, (req, res) => {
-    controller.put(req, res);
-});
+router.get('/', [ auth ], userController.getMe);
+
+router.put('/', [ auth ], userController.update);
 
 module.exports = router;

@@ -1,28 +1,23 @@
 import axios from 'axios';
 
-export default class UsersService {
-    
-    constructor() {
-        this.BASE_URL = 'http://localhost:3000/api/users'
-    }
+const baseUrl = 'http://localhost:3000/api/account'
 
-    login(email, password) {
-        return axios.post(`${this.BASE_URL}/login`, { email, password });
-    }
+export const signIn = (email, password) => {
+    return axios.post(`${baseUrl}/sign-in`, { email, password });
+}
 
-    register(user) {
-        return axios.post(`${this.BASE_URL}/register`, user);        
-    }
+export const signUp = (data) => {
+    return axios.post(`${baseUrl}/sign-up`, data);        
+}
 
-    accountVerify(token) {
-        return axios.post(`${this.BASE_URL}/register/${token}`);        
-    }
+export const accountVerify = (token) => {
+    return axios.post(`${baseUrl}/verify/${token}`);        
+}
 
-    passwordReset(email) {
-        return axios.post(`${this.BASE_URL}/password_reset`, { email });        
-    }
+export const passwordReset = (email) => {
+    return axios.post(`${baseUrl}/password-reset`, { email });        
+}
 
-    passwordResetNewPassword(resetToken, password) {
-        return axios.post(`${this.BASE_URL}/password_reset/${resetToken}`, { password });        
-    }
+export const passwordResetNewPassword = (resetToken, password) => {
+    return axios.post(`${baseUrl}/password-reset/${resetToken}`, { password });        
 }

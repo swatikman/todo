@@ -10,7 +10,7 @@ import {
     REMOVE_TASK_ERROR,
     ADD_TASK_SUCCESS,
     ADD_TASK_ERROR
- } from '../actions/TodoList';
+ } from '../actions/todo-list';
 import { replaceElemInArray } from '../utils/utils';
 
 

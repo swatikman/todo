@@ -1,7 +1,5 @@
-import TasksService from '../services/TasksService';
-import { LOGOUT } from './User';
-
-const tasksService = new TasksService();
+import { LOGOUT } from './user';
+import { getToken } from '../services/LocalStorage'
 
 export const FETCHING_TASKS = 'FETCHING_TASKS';
 export const FETCHING_TASKS_SUCCESS = 'FETCHING_TASKS_SUCCESS';
@@ -18,12 +16,13 @@ export const UPDATE_TASK = 'UPDATE_TASK';
 export const UPDATE_TASK_SUCCESS = 'UPDATE_TASK_SUCCESS';
 export const UPDATE_TASK_ERROR = 'UPDATE_TASK_ERROR';
 
-
 export const fetchTasks = () => ({
     type: FETCHING_TASKS,
     request: {
         url: '/tasks',
-        headers: tasksService.getHeaders()
+        headers: {
+            token: getToken()
+        }
     },
     meta: {
       abortOn: LOGOUT
@@ -36,8 +35,8 @@ export const fetchUpdateTask = (task) => ({
         method: 'PUT',
         url: `/tasks/${task._id}`,
         data: task,
-        headers: { 
-            ...tasksService.getHeaders() 
+        headers: {
+            token: getToken()
         }
     },
     meta: {
@@ -51,8 +50,8 @@ export const fetchAddTask = (task) => ({
         method: 'POST',
         url: '/tasks',
         data: task,
-        headers: { 
-            ...tasksService.getHeaders() 
+        headers: {
+            token: getToken()
         }
     },
     meta: {
@@ -65,9 +64,9 @@ export const fetchRemoveTask = (_id) => ({
     request: {
         method: 'DELETE',
         url: `/tasks/${_id}`,
-        headers: { 
-            ...tasksService.getHeaders() 
-        },
+        headers: {
+            token: getToken()
+        }
     },
     meta: {
         abortOn: LOGOUT,
