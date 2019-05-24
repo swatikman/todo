@@ -35,7 +35,7 @@ class TodoList extends Component {
         }
 
         if (loading) {
-            return <Spin size="large"  />;
+            return <Spin size="large" style={{ width: '100%' }}  />;
         }
 
         let visibleItems = tasks;

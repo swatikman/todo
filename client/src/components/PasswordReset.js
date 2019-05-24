@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { passwordReset } from '../services/UsersService';
-import { Input, Form, Button, Col, Alert } from 'antd';
+import { passwordReset } from '../services/users-service';
+import { Input, Form, Button, Col, Alert, Typography, Spin } from 'antd';
+import { emailRegexp, formResponsiveAttributes } from '../utils/utils';
 
-export default class PasswordReset extends Component {
+class PasswordReset extends Component {
 
-    state = { email: '', success: '', error: '' };
+    state = { email: '', success: '', error: '', loading: '' };
     
     componentDidMount() {
         document.title = 'Password reset';
@@ -18,41 +19,58 @@ export default class PasswordReset extends Component {
 
     onSubmit = async (e) => {
         e.preventDefault();
+        const { email } = this.state;
+        if (!email.match(emailRegexp)) {
+            this.setState({
+                error: 'Please enter valid email!'
+            });
+            return;
+        }        
+        this.setState({
+            loading: true
+        })
         try {
-            const { data } = await passwordReset(this.state.email);
+            const { data } = await passwordReset(email);
             this.setState({
                 success: data.message,
-                email: ''
+                email: '',
+                loading: false
             })
         } catch (err) {
             this.setState({
-                error: err.response.data.error
+                error: err.response.data.error,
+                loading: false
             });
         }
     }
 
     render() {
-        const { success, error, email } = this.state
+        const { success, error, email, loading } = this.state;
         let content = null;
         if (success) {
             content = <Alert message="Success" description={success} type="success" />;
         } else {
             content = (
-                <Form onSubmit={this.onSubmit} >
-                    { error ? <Alert message={error} type="error" /> : ''}
-                    Enter your email to reset password
-                    <Input type="text" name="email" 
+                <Spin spinning={loading}>
+                    <Form onSubmit={this.onSubmit} >
+                        <Typography.Paragraph strong>Enter your email to reset password</Typography.Paragraph>
+                        { error ? <Alert message={error} type="error" style={{ marginBottom: 16}}/> : ''}
+                        <Input type="text" name="email" 
                             value={email}
                             placeholder="Email"
                             onChange={this.onChange} />
-                    <Button type="primary" htmlType="submit">Submit</Button>
-                </Form>
+                        <Button type="primary" htmlType="submit">Submit</Button>
+                    </Form>
+                </Spin>
+                
             )
         }
         return (
-            <Col span={6} offset={9} className="password-reset-form">
+            <Col {...formResponsiveAttributes} className="password-reset-form">
                 {content}
             </Col>
         );
     }
 }
+
+export default PasswordReset;

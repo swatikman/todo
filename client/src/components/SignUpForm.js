@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { signUp } from '../services/UsersService';
-import { Input, Form, Col, Button, Alert, Icon, Typography } from 'antd';
-import { Redirect } from 'react-router-dom';
+import { signUp } from '../services/users-service';
+import { Input, Form, Col, Button, Alert, Icon, Typography, Spin } from 'antd';
+import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
+import { emailRegexp, formResponsiveAttributes } from '../utils/utils';
 
 class SignUpForm extends Component {
 
@@ -11,13 +12,15 @@ class SignUpForm extends Component {
         token: PropTypes.string
     }
 
+    emailRules = [{ required: true, pattern: emailRegexp, message: 'Please enter valid email!' }];
+    passwordRules = [{ required: true, min: 6, max: 20, message: 'Password length should be between 6 and 20' }];
+    firstnameRules = [{ required: true, min: 1, message: 'First name should not be empty!' }];
+    lastnameRules = [{ required: true, min: 1, message: 'Last name should not be empty!' }];
+
     state = { 
-        email: '', 
-        password: '',
-        firstname: '',
-        lastname: '',
         success: null,
-        error: null 
+        error: null,
+        loading: false
     };
 
     componentDidMount() {
@@ -30,24 +33,37 @@ class SignUpForm extends Component {
 
     onSubmit = async (e) => {
         e.preventDefault();
-        const { email, password, firstname, lastname } = this.state;
-        const user = { email, password, firstname, lastname };
+        this.props.form.validateFields( async (err, values) => {
+            if (!err) {
+                await this.signUp(values);
+            }
+        });
+       
+    }
+
+    signUp = async (signUpData) => {
+        this.setState({
+            loading: true
+        })
         try {
-            const { data } = await signUp(user);
-            this.setState({
-                error: null,
-                success: data.message,
+            const { data } = await signUp(signUpData);
+            this.props.form.setFieldsValue({
                 email: '', 
                 password: '',
                 firstname: '',
-                lastname: '',
+                lastname: ''
+            });
+            this.setState({
+                error: null,
+                success: data.message,
+                loading: false     
             });
         }
         catch (err) {
-            console.log(err);
             this.setState({
-                error: err.response.data.error
-            })
+                error: err.response.data.error,
+                loading: false
+            });
         }
     }
 
@@ -57,9 +73,10 @@ class SignUpForm extends Component {
             return <Redirect to='/' />
         }
 
-        const { email, password, firstname, 
-                lastname, success, error } = this.state;
-        
+        const { success, error } = this.state;
+
+        const { getFieldDecorator } = this.props.form;
+
         let content = null;
         let errorJsx = null;
         if (error) {
@@ -68,54 +85,63 @@ class SignUpForm extends Component {
                             type="error" style={{ marginBottom: 16 }}/>
         }
         if (success) {
-            content = <Alert message="Success" 
+            content = (
+                    <div className="sign-up-success">
+                        <Alert message="Success" 
                             description={success} 
                             type="success" />
+                        <Link to='/'>Return to main page</Link>
+                    </div>
+                );
         } else { 
             content = (
-                <React.Fragment>
+                <Spin spinning={this.state.loading} tip="Loading...">
                     <Typography.Title level={3}>Sign up</Typography.Title>
                     {errorJsx}
                     <Form onSubmit={this.onSubmit}>
                         <Form.Item>
-                            <Input 
+                            {getFieldDecorator('email', { rules: this.emailRules })(
+                                <Input 
                                     prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                     type="text" placeholder="Email"
                                     name="email" 
-                                    value={email}
                                     onChange={this.onChange} />
+                            )}
                         </Form.Item>
                         <Form.Item>
-                            <Input 
+                            {getFieldDecorator('password', { rules: this.passwordRules })(
+                                <Input
                                     prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}                                
                                     type="password" placeholder="Password"
                                     name="password"
-                                    value={password}
                                     onChange={this.onChange}  />
+                            )}
                         </Form.Item>
                         <Form.Item>
-                            <Input 
+                            {getFieldDecorator('firstname', { rules: this.firstnameRules })(
+                                <Input 
                                     prefix={<Icon type="smile" style={{ color: 'rgba(0,0,0,.25)' }} />}                                                        
                                     type="text" placeholder="First name"
                                     name="firstname"
-                                    value={firstname}
                                     onChange={this.onChange}  />
+                            )}
                         </Form.Item>
                         <Form.Item>
-                            <Input 
+                            {getFieldDecorator('lastname', { rules: this.lastnameRules })(
+                                <Input 
                                     prefix={<Icon type="meh" style={{ color: 'rgba(0,0,0,.25)' }} />}                                                        
                                     type="text" placeholder="Last name"
                                     name="lastname"
-                                    value={lastname}
                                     onChange={this.onChange}  />
+                            )}
                         </Form.Item>
                         <Button type="primary" htmlType="submit">Sign up</Button>
                     </Form>
-                </React.Fragment>
+                </Spin>
             );
         }
         return (
-            <Col span={6} offset={9} className="sign-up-form">
+            <Col {...formResponsiveAttributes}  className="sign-up-form">
                 {content}
             </Col>
         )
@@ -124,4 +150,4 @@ class SignUpForm extends Component {
 
 const mapStateToProps = ({ user: { token } }) => ({ token });
 
-export default connect(mapStateToProps)(SignUpForm);
+export default connect(mapStateToProps)(Form.create()(SignUpForm));

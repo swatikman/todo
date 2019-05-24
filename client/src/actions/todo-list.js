@@ -1,5 +1,5 @@
 import { LOGOUT } from './user';
-import { getToken } from '../services/LocalStorage'
+import { getToken } from '../services/localstorage'
 
 export const FETCHING_TASKS = 'FETCHING_TASKS';
 export const FETCHING_TASKS_SUCCESS = 'FETCHING_TASKS_SUCCESS';

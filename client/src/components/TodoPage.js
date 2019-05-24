@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import TodoList from './TodoList';
-import SearchTodos from './SearchTodos';
+import SearchTasks from './SearchTasks';
 import FilterTasks from './FilterTodos';
 import AddTask from './AddTask';
 import { Col, Row } from 'antd';
@@ -18,10 +18,12 @@ export default class TodoPage extends Component {
                 <Col>
                     <TodoHeader />
                 </Col>
-                <Col span={8} offset={6}>
+                <Col xs={{span: 18, offset: 3}} sm={{span: 16, offset: 4}}
+                md={{span: 12, offset: 6}} lg={{span: 10, offset: 7}} 
+                xl={{span: 8, offset: 8}}>
                     <AddTask />
                     <FilterTasks />
-                    <SearchTodos />
+                    <SearchTasks />
                     <TodoList />
                 </Col>
             </Row>

@@ -4,16 +4,18 @@ import { handleTaskSearch } from '../actions/todo-list';
 import { Input } from 'antd';
 import { PropTypes } from 'prop-types';
 
-const SearchTodos = ({ handleTaskSearch, search }) => {
+const SearchTasks = ({ handleTaskSearch, search }) => {
     return (
-        <Input.Search className="search-todo" 
+        <Input.Search
+                span={24}
+                className="search-todo" 
                 type="text" placeholder="Search" 
                 onChange={(e) => { handleTaskSearch(e.target.value) }}
                 value={search} />
     )   
 }
 
-SearchTodos.propTypes = {
+SearchTasks.propTypes = {
     handleTaskSearch: PropTypes.func,
     search: PropTypes.string
 }
@@ -22,4 +24,4 @@ const mapStateToProps = ({ todoListReducer: { search }}) => ({ search });
 
 const mapDispatchToProps = { handleTaskSearch };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchTodos);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchTasks);

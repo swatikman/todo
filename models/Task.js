@@ -12,8 +12,12 @@ const taskSchema = new mongoose.Schema({
     done: {
         type: mongoose.Schema.Types.Boolean,
         default: false,
+    }, 
+    category: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category'
     }
-})
+});
 
 const Task = mongoose.model('Task', taskSchema);
 

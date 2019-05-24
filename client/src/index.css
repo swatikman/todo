@@ -50,6 +50,17 @@ code {
   margin-top: 160px;
 }
 
+.account-verify {
+  margin-top: 50px;
+}
+
+.sign-up-form .sign-up-success a {
+  width: 100%;
+  display: inline-block;
+  text-align: center;
+  margin-top: 16px;
+}
+
 .password-reset-form {
   margin-top: 50px;
 }
@@ -68,4 +79,13 @@ code {
   justify-content: center;
 }
 
+@media screen and (max-width: 576px) {
+  .sign-up-form {
+    margin-top: 50px;
+  }
+  
+  .sign-in-form {
+    margin-top: 50px;
+  }
+}
 

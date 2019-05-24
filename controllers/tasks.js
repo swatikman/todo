@@ -1,7 +1,7 @@
 import Task from '../models/Task';
 
 export const get = async (request, response) => {
-    let tasks = await Task.find({ user: request.userId });
+    const tasks = await Task.find({ user: request.userId });
     response.send(tasks);
 };
 

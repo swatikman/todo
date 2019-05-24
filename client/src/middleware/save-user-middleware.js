@@ -1,5 +1,5 @@
 import { SIGN_IN_SUCCESS } from '../actions/user';
-import { saveToken } from '../services/LocalStorage';
+import { saveToken } from '../services/localstorage';
 
 const saveUserMiddleware = store => next => action => {
     if (action.type === SIGN_IN_SUCCESS) {

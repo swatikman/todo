@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchAddTask } from '../actions/todo-list';
-import { Button, Input, Row, Col } from 'antd';
+import { Button, Input, Row, Col, Form } from 'antd';
 
 class AddTask extends Component {
     
@@ -11,7 +11,7 @@ class AddTask extends Component {
     }
 
     state = {
-        taskText: '',
+        taskText: '', validationError: '',
     };
 
     onTaskTextChange = (e) => {
@@ -22,30 +22,40 @@ class AddTask extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
+        if (this.state.taskText.length === 0) {
+            this.setState({
+                validationError: 'Task title should not be empty'
+            })
+            return;
+        }
         this.props.fetchAddTask({ title: this.state.taskText });
         this.setState({
-            taskText: ''
+            taskText: '',
+            validationError: ''
         });
     }
 
     render() {
         return (
-            <form>
+            <Form>
                 <Row>
-                    <Col span={18} className="add-task">
-                        <Input type="text" 
-                            onChange={this.onTaskTextChange}
-                            value={this.state.taskText}
-                            placeholder="Task title"
-                            addon={<Button />}
-                            />
-                    </Col>
-                    <Col span={6} push={1}>
-                        <Button type="primary" onClick={this.onSubmit}>Add new task</Button>
+                    <Col span={24} className="add-task">
+                        <Form.Item help={this.state.validationError}  
+                            validateStatus={this.state.validationError ? 'error' : ''}>
+                            <Input type="text" 
+                                onChange={this.onTaskTextChange}
+                                value={this.state.taskText}
+                                placeholder="Task title"
+                                addon={<Button />}
+                                />
+                        </Form.Item>
+                        <Form.Item>
+                            <Button type="primary" onClick={this.onSubmit}>Add new task</Button>
+                        </Form.Item>
                     </Col>
                 </Row>
                 
-            </form>
+            </Form>
         )
     }
 }

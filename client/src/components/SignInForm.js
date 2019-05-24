@@ -4,6 +4,7 @@ import { Input, Icon, Form, Button, Col, Alert, Typography } from 'antd';
 import { connect } from 'react-redux';
 import { handleSignIn } from '../actions/user';
 import { PropTypes } from 'prop-types';
+import { formResponsiveAttributes } from '../utils/utils';
 
 class SignInForm extends Component {
     
@@ -42,10 +43,10 @@ class SignInForm extends Component {
 
         let errorJsx = null;
         if (error) {
-            errorJsx = <Alert message="Error" description={error} type="error" />
+            errorJsx = <Alert message="Error" description={error} type="error" style={{ marginBottom: 16}} />
         }
         return (
-            <Col span={6} offset={9} className="sign-in-form">
+            <Col {...formResponsiveAttributes} className="sign-in-form">
                 <Typography.Title level={3}>Sign in</Typography.Title>
                 {errorJsx}
                 <Form onSubmit={this.onSubmit}>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { passwordResetNewPassword } from '../services/UsersService';
+import { passwordResetNewPassword } from '../services/users-service';
 import { Form, Input, Button, Alert, Col, Typography } from 'antd';
+import { formResponsiveAttributes } from '../utils/utils';
 
 export default class PasswordResetNewPassword extends Component {
     
@@ -48,9 +49,11 @@ export default class PasswordResetNewPassword extends Component {
     render() {
         const { password1, password2, error, success } = this.state;
         let content = null;
+        let errorJsx = null;
         if (error) {
-            content =  <Alert message={error} type="error" />
-        } else if (success) {
+            errorJsx =  <Alert message={error} type="error" style={{ marginBottom: 16}}/>
+        }
+        if (success) {
             content =  <Alert message={success} type="success" />
         } else {
             content = (
@@ -58,6 +61,7 @@ export default class PasswordResetNewPassword extends Component {
                     <Typography.Title level={3} >
                         Type your new password
                     </Typography.Title>
+                    {errorJsx}
                     <Form.Item>
                         <Input type="password" name="password1" 
                             onChange={this.onChange}
@@ -77,7 +81,7 @@ export default class PasswordResetNewPassword extends Component {
             )
         }
         return (
-            <Col span={6} offset={9} className="password-reset-form2">
+            <Col {...formResponsiveAttributes} className="password-reset-form2">
                 {content}
             </Col>
         )
