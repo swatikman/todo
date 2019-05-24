@@ -7,8 +7,13 @@ const categorySchema = new mongoose.Schema({
     },
     title: {
         type: mongoose.Schema.Types.String,
-        required: true
-    }
+        required: true,
+        default: null
+    },
+    shared: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }]
 });
 
 const Category = mongoose.model('Category', categorySchema);

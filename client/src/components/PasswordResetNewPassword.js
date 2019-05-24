@@ -1,20 +1,23 @@
 import React, { Component } from 'react';
-import { passwordResetNewPassword } from '../services/users-service';
 import { Form, Input, Button, Alert, Col, Typography } from 'antd';
 import { formResponsiveAttributes } from '../utils/utils';
+import { connect } from 'react-redux';
+import { handlePasswordResetNewPassword } from '../store/actions/user';
+import { Helmet } from 'react-helmet';
+import { PropTypes } from 'prop-types';
 
-export default class PasswordResetNewPassword extends Component {
+class PasswordResetNewPassword extends Component {
     
+    static propTypes = {
+        handlePasswordResetNewPassword: PropTypes.func
+    }
+
     state = { 
         password1: '', 
         password2: '',
         success: '',
         error: ''
     };
-
-    componentDidMount() {
-        document.title = 'Password reset';
-    }
 
     onChange = (e) => {
         this.setState({
@@ -33,7 +36,7 @@ export default class PasswordResetNewPassword extends Component {
         }
         const token = this.props.match.params.token;
         try {
-            await passwordResetNewPassword(token, password1);
+            await this.props.handlePasswordResetNewPassword(token, password1);
             this.setState({
                 success: 'You can now login with new password',
                 error: ''
@@ -48,42 +51,40 @@ export default class PasswordResetNewPassword extends Component {
 
     render() {
         const { password1, password2, error, success } = this.state;
-        let content = null;
-        let errorJsx = null;
-        if (error) {
-            errorJsx =  <Alert message={error} type="error" style={{ marginBottom: 16}}/>
-        }
-        if (success) {
-            content =  <Alert message={success} type="success" />
-        } else {
-            content = (
-                <Form onSubmit={this.onSubmit}>
-                    <Typography.Title level={3} >
-                        Type your new password
-                    </Typography.Title>
-                    {errorJsx}
-                    <Form.Item>
-                        <Input type="password" name="password1" 
-                            onChange={this.onChange}
-                            placeholder="Password"
-                            value={password1}
-                            />
-                    </Form.Item>
-                    <Form.Item>
-                        <Input type="password" name="password2" 
-                            onChange={this.onChange}
-                            placeholder="Re-enter password"
-                            value={password2}
-                            />
-                    </Form.Item>
-                    <Button type="primary" htmlType="submit">Confirm</Button>
-                </Form>
-            )
-        }
         return (
             <Col {...formResponsiveAttributes} className="password-reset-form2">
-                {content}
+                <Helmet>
+                    <title>Password reset</title>
+                </Helmet>
+                {success
+                    ? <Alert message={success} type="success" />
+                    : <Form onSubmit={this.onSubmit}>
+                        <Typography.Title level={3} >
+                            Type your new password
+                        </Typography.Title>
+                        {error &&  <Alert message={error} type="error" style={{ marginBottom: 16}}/>}
+                        <Form.Item>
+                            <Input type="password" name="password1" 
+                                onChange={this.onChange}
+                                placeholder="Password"
+                                value={password1}
+                                />
+                        </Form.Item>
+                        <Form.Item>
+                            <Input type="password" name="password2" 
+                                onChange={this.onChange}
+                                placeholder="Re-enter password"
+                                value={password2}
+                                />
+                        </Form.Item>
+                        <Button type="primary" htmlType="submit">Confirm</Button>
+                    </Form>
+                }
             </Col>
         )
     }
 }
+
+const mapDispatchToProps = { handlePasswordResetNewPassword };
+
+export default connect(null, mapDispatchToProps)(PasswordResetNewPassword);

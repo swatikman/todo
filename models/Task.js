@@ -3,11 +3,13 @@ import mongoose from 'mongoose';
 const taskSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        default: null
     },
     title: {
         type: mongoose.Schema.Types.String,
-        required: true
+        required: true,
+        default: null
     },
     done: {
         type: mongoose.Schema.Types.Boolean,
@@ -15,7 +17,8 @@ const taskSchema = new mongoose.Schema({
     }, 
     category: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Category'
+        ref: 'Category',
+        default: null
     }
 });
 

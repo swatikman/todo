@@ -1,16 +1,23 @@
 import React, { Component } from 'react';
-import { accountVerify } from '../services/users-service';
 import { withRouter, Link } from 'react-router-dom'
 import { Col } from 'antd';
+import { formResponsiveAttributes } from '../utils/utils';
+import { connect } from 'react-redux';
+import { handleAccountVerify } from '../store/actions/user';
+import { PropTypes } from 'prop-types';
 
 class AccountVerify extends Component {
     
+    static propTypes = {
+        handleAccountVerify: PropTypes.func
+    }
+
     state = { response: '' };
     
     async componentDidMount() {
         const token = this.props.match.params.token;
         try {
-            const { data } = await accountVerify(token);
+            const { data } = await this.props.handleAccountVerify(token);
             this.setState({
                 response: data.message
             });
@@ -25,15 +32,8 @@ class AccountVerify extends Component {
         if (!this.state.response) {
             return <span>Loading...</span>
         }
-        const attrs = {
-            xs: {span: 18, offset: 3},
-            sm: {span: 16, offset: 4},
-            md: {span: 12, offset: 6},
-            lg: {span: 8, offset: 8},
-            xl: {span: 6, offset: 9} 
-        }
         return (
-            <Col {...attrs} className="account-verify">
+            <Col {...formResponsiveAttributes} className="account-verify">
                 <h3>{this.state.response}</h3>
                 <Link to='/sign-in'>To sign in page</Link>
             </Col>
@@ -41,4 +41,7 @@ class AccountVerify extends Component {
     }
 }
 
-export default withRouter(AccountVerify)
+const mapDispatchToProps = { handleAccountVerify };
+
+export default connect(null, mapDispatchToProps)(
+        withRouter(AccountVerify))

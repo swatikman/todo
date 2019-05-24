@@ -27,12 +27,29 @@ const userSchema = new mongoose.Schema({
         required: true,
         minlength: 6
     },
-    isVerified: {
-        type: mongoose.Schema.Types.Date
+    categories: [{
+        category: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Category'
+        },
+        owner: mongoose.Schema.Types.Boolean
+    }],
+    verifiedAt: {
+        type: mongoose.Schema.Types.Date,
+        default: null
     },
-    accountVerifyToken: mongoose.Schema.Types.String,
-    passwordResetToken: mongoose.Schema.Types.String,
-    passwordResetTokenExpires: mongoose.Schema.Types.Date
+    accountVerifyToken: {
+        type: mongoose.Schema.Types.String,
+        default: null
+    },
+    passwordResetToken: {
+        type: mongoose.Schema.Types.String,
+        default: null
+    },
+    passwordResetTokenExpires: {
+        type: mongoose.Schema.Types.Date,
+        default: null
+    }
 });
 
 class UserClass {
@@ -57,7 +74,7 @@ class UserClass {
 
     verify() {
         this.accountVerifyToken = undefined;
-        this.isVerified = moment();
+        this.verifiedAt = moment();
         return this.save();
     }
 
@@ -71,7 +88,7 @@ class UserClass {
         this.password = await hashPassword(password);
         this.passwordResetToken = null;
         this.passwordResetTokenExpires = null; 
-        this.isVerified = moment();
+        this.verifiedAt = moment();
         return this.save();
     }
 

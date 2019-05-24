@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
-import { passwordReset } from '../services/users-service';
 import { Input, Form, Button, Col, Alert, Typography, Spin } from 'antd';
 import { emailRegexp, formResponsiveAttributes } from '../utils/utils';
+import { connect } from 'react-redux';
+import { handlePasswordReset } from '../store/actions/user';
+import { Helmet } from 'react-helmet';
 
 class PasswordReset extends Component {
 
-    state = { email: '', success: '', error: '', loading: '' };
-    
-    componentDidMount() {
-        document.title = 'Password reset';
-    }
+    state = { email: '', success: '', error: '', loading: false };
 
     onChange = (e) => {
         this.setState({
@@ -30,7 +28,7 @@ class PasswordReset extends Component {
             loading: true
         })
         try {
-            const { data } = await passwordReset(email);
+            const { data } = await this.props.handlePasswordReset(email);
             this.setState({
                 success: data.message,
                 email: '',
@@ -46,31 +44,30 @@ class PasswordReset extends Component {
 
     render() {
         const { success, error, email, loading } = this.state;
-        let content = null;
-        if (success) {
-            content = <Alert message="Success" description={success} type="success" />;
-        } else {
-            content = (
-                <Spin spinning={loading}>
-                    <Form onSubmit={this.onSubmit} >
-                        <Typography.Paragraph strong>Enter your email to reset password</Typography.Paragraph>
-                        { error ? <Alert message={error} type="error" style={{ marginBottom: 16}}/> : ''}
-                        <Input type="text" name="email" 
-                            value={email}
-                            placeholder="Email"
-                            onChange={this.onChange} />
-                        <Button type="primary" htmlType="submit">Submit</Button>
-                    </Form>
-                </Spin>
-                
-            )
-        }
         return (
             <Col {...formResponsiveAttributes} className="password-reset-form">
-                {content}
+                <Helmet>
+                    <title>Password reset</title>
+                </Helmet>
+                {success
+                    ? <Alert message="Success" description={success} type="success" />
+                    : <Spin spinning={loading}>
+                            <Form onSubmit={this.onSubmit} >
+                                <Typography.Paragraph strong>Enter your email to reset password</Typography.Paragraph>
+                                { error ? <Alert message={error} type="error" style={{ marginBottom: 16}}/> : ''}
+                                <Input type="text" name="email" 
+                                    value={email}
+                                    placeholder="Email"
+                                    onChange={this.onChange} />
+                                <Button type="primary" htmlType="submit">Submit</Button>
+                            </Form>
+                        </Spin>
+                }
             </Col>
         );
     }
 }
 
-export default PasswordReset;
+const mapDispatchToProps = { handlePasswordReset };
+
+export default connect(null, mapDispatchToProps)(PasswordReset);

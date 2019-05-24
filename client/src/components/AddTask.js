@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchAddTask } from '../actions/todo-list';
+import { fetchAddTask } from '../store/actions/todo-list';
 import { Button, Input, Row, Col, Form } from 'antd';
 
 class AddTask extends Component {

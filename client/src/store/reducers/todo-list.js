@@ -1,17 +1,12 @@
-import { 
-    FETCHING_TASKS,
-    FETCHING_TASKS_SUCCESS,
-    FETCHING_TASKS_ERROR,
+import { replaceElemInArray } from '../../utils/utils';
+import { success, error } from 'redux-saga-requests';import { 
+    FETCH_TASKS,
     SET_TASK_FILTER,
     TASK_SEARCH_CHANGE,
-    UPDATE_TASK_SUCCESS,
-    UPDATE_TASK_ERROR,
-    REMOVE_TASK_SUCCESS,
-    REMOVE_TASK_ERROR,
-    ADD_TASK_SUCCESS,
-    ADD_TASK_ERROR
+    UPDATE_TASK,
+    ADD_TASK,
+    REMOVE_TASK
  } from '../actions/todo-list';
-import { replaceElemInArray } from '../utils/utils';
 
 
 const initialState = {
@@ -25,13 +20,13 @@ const initialState = {
 
 const todoListReducer = (state = initialState, action) => {
     switch (action.type) {
-        case FETCHING_TASKS:
+        case FETCH_TASKS:
             return {
                 ...state,
                 loading: true,
                 error: '',
             }
-        case FETCHING_TASKS_ERROR:
+        case error(FETCH_TASKS):
             return {
                 ...state,
                 loading: false,
@@ -39,7 +34,7 @@ const todoListReducer = (state = initialState, action) => {
                 error: action.error.response.data.error,
                 tasks: []
             }
-        case FETCHING_TASKS_SUCCESS:
+        case success(FETCH_TASKS):
             return {
                 ...state,
                 loading: false,
@@ -59,7 +54,7 @@ const todoListReducer = (state = initialState, action) => {
                 minorError: '',
                 search: action.payload,
             }
-        case UPDATE_TASK_SUCCESS: {
+        case success(UPDATE_TASK): {
             const newTasks = replaceElemInArray(state.tasks, action.data, 
                 (item) => item._id === action.data._id);
             return {
@@ -68,12 +63,12 @@ const todoListReducer = (state = initialState, action) => {
                 tasks: newTasks
             }
         }
-        case UPDATE_TASK_ERROR:
+        case error(UPDATE_TASK):
             return {
                 ...state,
                 minorError: action.error.response.data.error
             }
-        case REMOVE_TASK_SUCCESS: {
+        case success(REMOVE_TASK): {
             const newTasks = state.tasks.filter((task) => task._id !== action.meta._id );
             return {
                 ...state,
@@ -81,13 +76,12 @@ const todoListReducer = (state = initialState, action) => {
                 tasks: newTasks
             }
         }
-            
-        case REMOVE_TASK_ERROR:
+        case error(REMOVE_TASK):
             return {
                 ...state,
                 minorError: action.error.response.data.error 
             }
-        case ADD_TASK_SUCCESS: {
+        case success(ADD_TASK): {
             const newTasks = state.tasks.concat([action.data]);
             return {
                 ...state,
@@ -95,7 +89,7 @@ const todoListReducer = (state = initialState, action) => {
                 tasks: newTasks
             }
         }
-        case ADD_TASK_ERROR:
+        case error(ADD_TASK):
             return {
                 ...state,
                 minorError: action.error.response.data.error 

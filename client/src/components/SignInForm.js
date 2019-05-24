@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 import { Link, Redirect } from 'react-router-dom';
 import { Input, Icon, Form, Button, Col, Alert, Typography } from 'antd';
 import { connect } from 'react-redux';
-import { handleSignIn } from '../actions/user';
+import { handleSignIn } from '../store/actions/user';
 import { PropTypes } from 'prop-types';
 import { formResponsiveAttributes } from '../utils/utils';
+import { Helmet } from 'react-helmet';
 
 class SignInForm extends Component {
     
@@ -14,10 +15,6 @@ class SignInForm extends Component {
     }
     
     state = { email: '', password: '', error: null };
-
-    componentDidMount() {
-        document.title = 'Sign in';
-    }
 
     onChange = (event) => {
         this.setState({ [event.target.name]: event.target.value });
@@ -41,14 +38,13 @@ class SignInForm extends Component {
             return <Redirect to='/' />
         }
 
-        let errorJsx = null;
-        if (error) {
-            errorJsx = <Alert message="Error" description={error} type="error" style={{ marginBottom: 16}} />
-        }
         return (
             <Col {...formResponsiveAttributes} className="sign-in-form">
+                <Helmet>
+                    <title>Sign in</title>
+                </Helmet>
                 <Typography.Title level={3}>Sign in</Typography.Title>
-                {errorJsx}
+                {error && <Alert message="Error" description={error} type="error" style={{ marginBottom: 16}} />}
                 <Form onSubmit={this.onSubmit}>
                     <Form.Item>
                         <Input

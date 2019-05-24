@@ -8,6 +8,9 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import usersRouter from './routes/users';
 import tasksRouter from './routes/tasks';
+import categoriesRouter from './routes/categories';
+
+const app = express();
 
 mongoose.connect(config.dbHost, { useNewUrlParser: true, useFindAndModify: false })
     .then(() => console.log('Connected to Database...'))
@@ -16,7 +19,6 @@ mongoose.connect(config.dbHost, { useNewUrlParser: true, useFindAndModify: false
         process.exit(1);
     })
 
-var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -32,6 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/account', usersRouter);
 app.use('/api/tasks', tasksRouter);
+app.use('/api/categories', categoriesRouter);
 
 
 app.get('*', (req, res) => {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import TodoItem from './TodoItem';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchTasks, fetchUpdateTask, fetchRemoveTask } from '../actions/todo-list';
+import { fetchTasks, fetchUpdateTask, fetchRemoveTask } from '../store/actions/todo-list';
 import { List, Alert, Spin } from 'antd';
 
 class TodoList extends Component {

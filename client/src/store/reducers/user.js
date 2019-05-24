@@ -1,8 +1,8 @@
 import { 
-    SIGN_IN_SUCCESS,
-    SIGN_IN_ERROR,
+    SIGN_IN,
     LOGOUT
  } from '../actions/user';
+import { success, error } from 'redux-saga-requests';
 
 const initialState = {
     token: localStorage.getItem("token")
@@ -10,11 +10,11 @@ const initialState = {
 
 const user = (state = initialState, action) => {
     switch (action.type) {
-        case SIGN_IN_SUCCESS:
+        case success(SIGN_IN):
             return {
                 token: action.response.headers.token
             };
-        case SIGN_IN_ERROR: {
+        case error(SIGN_IN): {
             return state;
         }
         case LOGOUT:

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { handleFilterClick } from '../actions/todo-list';
+import { handleFilterClick } from '../store/actions/todo-list';
 import { Radio } from 'antd';
 import { PropTypes } from 'prop-types';
 
