@@ -1,13 +1,13 @@
 {
 	"info": {
-		"_postman_id": "d781e3f9-6682-4ae4-99a4-8a3ea8afa11b",
+		"_postman_id": "4b796ceb-337f-46f2-ab6d-4f39d86bc62c",
 		"name": "TODO List",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "Account",
-			"description": "",
+			"description": null,
 			"item": [
 				{
 					"name": "Sign up",
@@ -24,12 +24,12 @@
 							"raw": "{\n\t\"email\": \"swatikman@gmail.com\",\n\t\"password\": \"123456\",\n\t\"firstname\": \"Ivan\",\n\t\"lastname\": \"Ivanov\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/account/sign-up/",
+							"raw": "http://localhost:8000/api/account/sign-up/",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "8000",
 							"path": [
 								"api",
 								"account",
@@ -76,11 +76,11 @@
 							"raw": "{\n\t\"email\": \"swatikman@gmail.com\",\n\t\"password\": \"123456\"\n}"
 						},
 						"url": {
-							"raw": "localhost:3000/api/account/sign-in",
+							"raw": "localhost:8000/api/account/sign-in",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "8000",
 							"path": [
 								"api",
 								"account",
@@ -100,12 +100,12 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/account/verify/c20a9164-0358-453d-b2c3-a17b8ceaf0bf",
+							"raw": "http://localhost:8000/api/account/verify/c20a9164-0358-453d-b2c3-a17b8ceaf0bf",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "8000",
 							"path": [
 								"api",
 								"account",
@@ -131,12 +131,12 @@
 							"raw": "{\n\t\"email\": \"swatikman@gmail.com\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/account/password-reset/",
+							"raw": "http://localhost:8000/api/account/password-reset/",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "8000",
 							"path": [
 								"api",
 								"account",
@@ -162,12 +162,12 @@
 							"raw": "{\n\t\"password\": \"123456\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/account/password-reset/de7e3a5e-198c-4a2d-a6d1-1126c34a5f23",
+							"raw": "http://localhost:8000/api/account/password-reset/de7e3a5e-198c-4a2d-a6d1-1126c34a5f23",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "8000",
 							"path": [
 								"api",
 								"account",
@@ -197,12 +197,12 @@
 							"raw": "{\n\t\"firstname\": \"Ivanov\",\n\t\"lastname\": \"Ivanov\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/account/",
+							"raw": "http://localhost:8000/api/account/",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "8000",
 							"path": [
 								"api",
 								"account",
@@ -227,12 +227,12 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/account/",
+							"raw": "http://localhost:8000/api/account/",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "8000",
 							"path": [
 								"api",
 								"account",
@@ -245,8 +245,8 @@
 			]
 		},
 		{
-			"name": "TodoList",
-			"description": "",
+			"name": "Tasks",
+			"description": null,
 			"item": [
 				{
 					"name": "Create new task",
@@ -284,12 +284,12 @@
 							"raw": "{\n\t\"title\": \"Code\",\n\t\"done\": false\n}"
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/tasks/",
+							"raw": "http://localhost:8000/api/tasks/",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "8000",
 							"path": [
 								"api",
 								"tasks",
@@ -318,12 +318,12 @@
 							"raw": "{\n\t\"label\": \"Eat food\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/tasks?filter=in-progress&search=",
+							"raw": "http://localhost:8000/api/tasks?filter=in-progress&search=",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "8000",
 							"path": [
 								"api",
 								"tasks"
@@ -361,12 +361,12 @@
 							"raw": "{\n\t\"label\": \"Eat food\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/tasks/{{taskId}}",
+							"raw": "http://localhost:8000/api/tasks/{{taskId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "8000",
 							"path": [
 								"api",
 								"tasks",
@@ -395,12 +395,12 @@
 							"raw": "{\n\t\"title\": \"Eat food\",\n\t\"done\": true\n}\n"
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/tasks/{{taskId}}",
+							"raw": "http://localhost:8000/api/tasks/{{taskId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "8000",
 							"path": [
 								"api",
 								"tasks",
@@ -437,14 +437,17 @@
 								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1Y2U3YzQ5M2U0NWI2ZjcwZDFhNjZkMmQiLCJpYXQiOjE1NTg5NDQ0MDR9.qLKKu7k9zWBdMBVPAe6kwKdLIQca-Ml2T_BeMg9Z8JI"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
-							"raw": "http://localhost:3000/api/tasks/{{taskId}}",
+							"raw": "http://localhost:8000/api/tasks/{{taskId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "8000",
 							"path": [
 								"api",
 								"tasks",
@@ -455,6 +458,11 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Categories",
+			"description": "",
+			"item": []
 		}
 	]
 }
