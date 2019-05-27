@@ -1,0 +1,460 @@
+{
+	"info": {
+		"_postman_id": "d781e3f9-6682-4ae4-99a4-8a3ea8afa11b",
+		"name": "TODO List",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Account",
+			"description": "",
+			"item": [
+				{
+					"name": "Sign up",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"swatikman@gmail.com\",\n\t\"password\": \"123456\",\n\t\"firstname\": \"Ivan\",\n\t\"lastname\": \"Ivanov\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/account/sign-up/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"account",
+								"sign-up",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sign In",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a35846b8-b02c-4085-aa0f-d971e11bf9ec",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status is ok, response is json\", function () {",
+									"    pm.response.to.be.ok;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"try {",
+									"    pm.environment.set(\"token\", postman.getResponseHeader(\"token\"));",
+									"} catch (e) {",
+									"    console.log(e);",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"swatikman@gmail.com\",\n\t\"password\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/api/account/sign-in",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"account",
+								"sign-in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sign up verify",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/account/verify/c20a9164-0358-453d-b2c3-a17b8ceaf0bf",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"account",
+								"verify",
+								"c20a9164-0358-453d-b2c3-a17b8ceaf0bf"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Password reset",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"swatikman@gmail.com\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/account/password-reset/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"account",
+								"password-reset",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Password reset new password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"password\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/account/password-reset/de7e3a5e-198c-4a2d-a6d1-1126c34a5f23",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"account",
+								"password-reset",
+								"de7e3a5e-198c-4a2d-a6d1-1126c34a5f23"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update account",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1Y2U3YzQ5M2U0NWI2ZjcwZDFhNjZkMmQiLCJpYXQiOjE1NTg5NTAxNTd9.W0wr-QMeK6eUZTJ2-fz8X2ry40YyFRWQHPOaQBkIE8Y"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"firstname\": \"Ivanov\",\n\t\"lastname\": \"Ivanov\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/account/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"account",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get account info",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/account/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"account",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TodoList",
+			"description": "",
+			"item": [
+				{
+					"name": "Create new task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fdbabfe2-1e03-47bb-a7d3-8330a12f373c",
+								"type": "text/javascript",
+								"exec": [
+									"try {",
+									"    pm.environment.set(\"taskId\", pm.response.json()._id);",
+									"} catch (e) {",
+									"    console.log(e);",
+									"}",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"Code\",\n\t\"done\": false\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/tasks/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"tasks",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all tasks of current user",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"label\": \"Eat food\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/tasks?filter=in-progress&search=",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"tasks"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "in-progress"
+								},
+								{
+									"key": "search",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get one task of current user",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"label\": \"Eat food\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/tasks/{{taskId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"tasks",
+								"{{taskId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update one task of current user",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"Eat food\",\n\t\"done\": true\n}\n"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/tasks/{{taskId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"tasks",
+								"{{taskId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete one task of current user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "af5a860d-1b2f-4f5d-8fad-309b169b21b6",
+								"type": "text/javascript",
+								"exec": [
+									"try {",
+									"    pm.environment.set(\"taskId\", null);",
+									"} catch (e) {",
+									"    console.log(e);",
+									"}",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1Y2U3YzQ5M2U0NWI2ZjcwZDFhNjZkMmQiLCJpYXQiOjE1NTg5NDQ0MDR9.qLKKu7k9zWBdMBVPAe6kwKdLIQca-Ml2T_BeMg9Z8JI"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:3000/api/tasks/{{taskId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"tasks",
+								"{{taskId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

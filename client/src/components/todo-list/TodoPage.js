@@ -1,7 +1,7 @@
 import React from 'react';
 import TodoList from './TodoList';
 import SearchTasks from './SearchTasks';
-import FilterTasks from './FilterTodos';
+import FilterTasks from './FilterTasks';
 import AddTask from './AddTask';
 import { Col, Row } from 'antd';
 import TodoHeader from './TodoHeader';

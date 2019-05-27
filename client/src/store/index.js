@@ -5,6 +5,7 @@ import createSagaMiddleware from 'redux-saga';
 import { requestsPromiseMiddleware } from 'redux-saga-requests';
 import sagas from './sagas';
 import saveUserMiddleware from './middleware/save-user-middleware';
+import { getToken } from './utils/localstorage';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -14,7 +15,15 @@ const middlewares = applyMiddleware(
     sagaMiddleware,
     saveUserMiddleware);
 
-const store = createStore(reducers, middlewares);
+const userInitialState = {
+    token: getToken() 
+};
+
+const initialState = {
+    user: userInitialState
+};
+
+const store = createStore(reducers, initialState, middlewares);
 
 sagaMiddleware.run(sagas);
 

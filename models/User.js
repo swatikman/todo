@@ -27,13 +27,6 @@ const userSchema = new mongoose.Schema({
         required: true,
         minlength: 6
     },
-    categories: [{
-        category: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Category'
-        },
-        owner: mongoose.Schema.Types.Boolean
-    }],
     verifiedAt: {
         type: mongoose.Schema.Types.Date,
         default: null

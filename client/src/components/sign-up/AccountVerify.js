@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { withRouter, Link } from 'react-router-dom'
 import { Col } from 'antd';
-import { formResponsiveAttributes } from '../utils/utils';
+import { formResponsiveAttributes } from '../../store/utils/utils';
 import { connect } from 'react-redux';
-import { handleAccountVerify } from '../store/actions/user';
+import { handleAccountVerify } from '../../store/actions/user';
 import { PropTypes } from 'prop-types';
 
 class AccountVerify extends Component {

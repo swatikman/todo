@@ -2,7 +2,7 @@ import React from 'react';
 import { Layout, Button, Icon } from 'antd'; 
 import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { handleLogout } from '../store/actions/user';
+import { handleLogout } from '../../store/actions/user';
 import { PropTypes } from 'prop-types';
 
 const TodoHeader = ({ handleLogout }) => {

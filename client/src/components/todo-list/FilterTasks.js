@@ -1,24 +1,24 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { handleFilterClick } from '../store/actions/todo-list';
+import { handleFilterClick } from '../../store/actions/todo-list';
 import { Radio } from 'antd';
 import { PropTypes } from 'prop-types';
 
 const FilterTasks = ({ filter, handleFilterClick }) => {
     const buttonLabels = [
-        'All',
-        'Done',
-        'In progress',
+        { title: 'All', data: 'all'},
+        { title: 'Done', data: 'done'},
+        { title: 'In progress', data: 'in-progress' },
     ];
     return (
         <div className="filter-tasks">
             <Radio.Group value={filter} size="large" buttonStyle="solid" >
-                {buttonLabels.map((label) => {
+                {buttonLabels.map(({ title, data }) => {
                     return (
-                        <Radio.Button key={label}
-                            onClick={() => handleFilterClick(label)}
-                            value={label} >
-                            {label}
+                        <Radio.Button key={title}
+                            onClick={() => handleFilterClick(data)}
+                            value={data} >
+                            {title}
                         </Radio.Button>
                     );
                 })}

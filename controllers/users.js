@@ -72,7 +72,7 @@ export const passwordResetNewPassword = async (request, response) => {
 };
     
 export const getMe = async (request, response) => {
-    const user = await User.findById(request.userId, 'email firstname lastname');
+    const user = await User.findById(request.user._id, 'email firstname lastname');
     if (user) {
         return response.send(user);
     }
@@ -82,7 +82,7 @@ export const getMe = async (request, response) => {
 export const update = async (request, response) => {
     const newData = pick(request.body, ['firstname', 'lastname']);
     const user =  await User
-            .findByIdAndUpdate(request.userId, newData, { new: true })
+            .findByIdAndUpdate(request.user._id, newData, { new: true })
             .select('email firstname lastname');
     response.send(user);
 };

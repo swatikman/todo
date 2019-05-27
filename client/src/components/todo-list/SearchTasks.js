@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { handleTaskSearch } from '../store/actions/todo-list';
+import { handleTaskSearch } from '../../store/actions/todo-list';
 import { Input } from 'antd';
 import { PropTypes } from 'prop-types';
 

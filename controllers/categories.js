@@ -1,10 +1,7 @@
 import Category from '../models/Category';
-import User from '../models/User';
 
 export const getAccountCategories = async (request, response) => {
-    const user = await User.findById(request.userId)
-            .populate('categories.category');
-    response.send(user.categories);
+    response.send(501);
 };
 
 export const getOne = async (request, response) => {
@@ -21,14 +18,12 @@ export const create = async (request, response) => {
         title: request.body.title,
     };
     const category = await Category.create(data);
-    const user = await User.findById(request.userId);
-    user.categories.push({ category: category._id, owner: true });
-    await user.save();
     
     response.send(category);
 };
 
 export const update = async (request, response) => {
+    response.send(501);
 };
 
 export const deleteCategory = async (request, response) => {
@@ -36,9 +31,5 @@ export const deleteCategory = async (request, response) => {
     if (!category) {
         return response.status(404).send({ error: 'Category was not found' });
     }
-    const user = await User.findById(request.userId);
-    user.categories = user.categories.filter(({ category }) => category.toString() !== request.params.id);
-    await user.save();
-    
     response.send({ message: 'Category was removed' });
 };

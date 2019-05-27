@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchAddTask } from '../store/actions/todo-list';
+import { handleAddTask } from '../../store/actions/todo-list';
 import { Button, Input, Row, Col, Form } from 'antd';
 
 class AddTask extends Component {
     
     static propTypes = {
-        fetchAddTask: PropTypes.func
+        handleAddTask: PropTypes.func
     }
 
     state = {
-        taskText: '', validationError: '',
+        taskText: '', 
+        validationError: '',
     };
 
     onTaskTextChange = (e) => {
@@ -28,7 +29,7 @@ class AddTask extends Component {
             })
             return;
         }
-        this.props.fetchAddTask({ title: this.state.taskText });
+        this.props.handleAddTask({ title: this.state.taskText });
         this.setState({
             taskText: '',
             validationError: ''
@@ -37,7 +38,7 @@ class AddTask extends Component {
 
     render() {
         return (
-            <Form>
+            <Form onSubmit={this.onSubmit}>
                 <Row>
                     <Col span={24} className="add-task">
                         <Form.Item help={this.state.validationError}  
@@ -50,7 +51,7 @@ class AddTask extends Component {
                                 />
                         </Form.Item>
                         <Form.Item>
-                            <Button type="primary" onClick={this.onSubmit}>Add new task</Button>
+                            <Button type="primary" htmlType="submit">Add new task</Button>
                         </Form.Item>
                     </Col>
                 </Row>
@@ -60,6 +61,6 @@ class AddTask extends Component {
     }
 }
 
-const mapDispatchToProps = { fetchAddTask };
+const mapDispatchToProps = { handleAddTask };
 
 export default connect(null, mapDispatchToProps)(AddTask);

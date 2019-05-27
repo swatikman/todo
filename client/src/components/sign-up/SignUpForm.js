@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Input, Form, Col, Button, Alert, Icon, Typography, Spin } from 'antd';
-import { Redirect, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
-import { emailRegexp, formResponsiveAttributes } from '../utils/utils';
-import { handleSignUp } from '../store/actions/user';
+import { emailRegexp, formResponsiveAttributes } from '../../store/utils/utils';
+import { handleSignUp } from '../../store/actions/user';
 import { Helmet } from 'react-helmet';
+import { getError } from '../../store/utils/utils';
 
 class SignUpForm extends Component {
 
@@ -66,17 +67,13 @@ class SignUpForm extends Component {
         }
         catch (err) {
             this.setState({
-                error: err.response.data.error,
+                error: getError(err.error),
                 loading: false
             });
         }
     }
 
     render() {
-        const { token } = this.props;
-        if (token) {
-            return <Redirect to='/' />
-        }
 
         const { success, error } = this.state;
         const { getFieldDecorator } = this.props.form;
@@ -153,8 +150,7 @@ class SignUpForm extends Component {
     }
 }
 
-const mapStateToProps = ({ user: { token } }) => ({ token });
 
 const mapDispatchToProps = { handleSignUp };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Form.create()(SignUpForm));
+export default connect(null, mapDispatchToProps)(Form.create()(SignUpForm));

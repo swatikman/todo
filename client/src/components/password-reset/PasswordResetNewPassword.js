@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Form, Input, Button, Alert, Col, Typography } from 'antd';
-import { formResponsiveAttributes } from '../utils/utils';
+import { formResponsiveAttributes, getError } from '../../store/utils/utils';
 import { connect } from 'react-redux';
-import { handlePasswordResetNewPassword } from '../store/actions/user';
+import { handlePasswordResetNewPassword } from '../../store/actions/user';
 import { Helmet } from 'react-helmet';
 import { PropTypes } from 'prop-types';
 
@@ -44,7 +44,7 @@ class PasswordResetNewPassword extends Component {
         } catch (err) {
             this.setState({
                 success: '',
-                error: err.response.data.error
+                error: getError(err.error)
             });
         }
     }

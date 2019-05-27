@@ -1,22 +1,32 @@
 import * as yup from 'yup';
 
-export const registerSchema = {
+const password = yup.string().min(6).max(20).strict(true).required().label('password');
+const email = yup.string().email().required().label('email');
+
+export const signUpSchema = {
     body: yup.object().shape({
         firstname: yup.string().min(1).strict(true).required().label('firstname'),
         lastname: yup.string().min(1).strict(true).required().label('lastname'),
-        email: yup.string().email().required().label('email'),
-        password: yup.string().min(6).max(20).strict(true).required().label('password')
+        email: email,
+        password: password
     })
 };
 
-export const emailSchema = {
+export const signInSchema = {
     body: yup.object().shape({
-        email: yup.string().email().required().label('email'),
+        email: email,
+        password: password
     })
 };
 
-export const passwordSchema = {
+export const passwordResetSchema = {
     body: yup.object().shape({
-        password: yup.string().min(6).max(20).strict(true).required().label('password')
+        email: email
+    })
+};
+
+export const passwordResetNewPasswordSchema = {
+    body: yup.object().shape({
+        password: password
     })
 };

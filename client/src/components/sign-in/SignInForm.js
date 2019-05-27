@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Input, Icon, Form, Button, Col, Alert, Typography } from 'antd';
 import { connect } from 'react-redux';
-import { handleSignIn } from '../store/actions/user';
+import { handleSignIn } from '../../store/actions/user';
 import { PropTypes } from 'prop-types';
-import { formResponsiveAttributes } from '../utils/utils';
+import { formResponsiveAttributes } from '../../store/utils/utils';
 import { Helmet } from 'react-helmet';
+import { getError } from '../../store/utils/utils';
 
 class SignInForm extends Component {
     
@@ -26,18 +27,13 @@ class SignInForm extends Component {
             await this.props.handleSignIn(this.state.email, this.state.password);
         } catch (err) {
             this.setState({
-                error: err.error.response.data.error
+                error: getError(err.error)
             });
         }
     }
 
     render() {
         const { email, password, error } = this.state;
-        const { token } = this.props;
-        if (token) {
-            return <Redirect to='/' />
-        }
-
         return (
             <Col {...formResponsiveAttributes} className="sign-in-form">
                 <Helmet>
@@ -81,8 +77,6 @@ class SignInForm extends Component {
     }
 }   
 
-const mapStateToProps = ({ user: { token, error } }) => ({ token, error });
-
 const mapDispatchToProps = { handleSignIn };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignInForm);
+export default connect(null, mapDispatchToProps)(SignInForm);

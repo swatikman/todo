@@ -7,6 +7,11 @@ export function replaceElemInArray(items, newElement, filterFunc) {
         ];
 }
 
+export const getError = (error, defaultMessage = 'Error occurred. Try again later.') => {
+    const { error: message } = error.response.data;
+    return (message) ? message : defaultMessage; 
+}
+
 export const emailRegexp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export const formResponsiveAttributes = {
@@ -16,3 +21,4 @@ export const formResponsiveAttributes = {
     lg: {span: 8, offset: 8},
     xl: {span: 6, offset: 9} 
 };
+

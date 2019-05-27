@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Input, Form, Button, Col, Alert, Typography, Spin } from 'antd';
-import { emailRegexp, formResponsiveAttributes } from '../utils/utils';
+import { emailRegexp, formResponsiveAttributes, getError } from '../../store/utils/utils';
 import { connect } from 'react-redux';
-import { handlePasswordReset } from '../store/actions/user';
+import { handlePasswordReset } from '../../store/actions/user';
 import { Helmet } from 'react-helmet';
 
 class PasswordReset extends Component {
@@ -36,7 +36,7 @@ class PasswordReset extends Component {
             })
         } catch (err) {
             this.setState({
-                error: err.response.data.error,
+                error: getError(err.error),
                 loading: false
             });
         }
